@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref, onMounted, watch } = Vue;
+
+        createApp({
+            setup() {
+                const mediaType = ref("movie");
+                const mediaList = ref([]);
+                const keywordId = ref(localStorage.getItem("selectedKeywordId"));
+                const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
+                const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
+
+                const fetchMedia = () => {
+                    if (!keywordId.value) {
+                        console.error("No se ha proporcionado un ID de palabra clave.");
+                        return;
+                    }
+
+                    const url = `https://api.themoviedb.org/3/discover/${mediaType.value}?api_key=${apiKey}&language=es-ES&with_keywords=${keywordId.value}`;
+
+                    fetch(url, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": apiToken,
+                            "Content-Type": "application/json;charset=utf-8"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        mediaList.value = data.results;
+                    })
+                    .catch(error => console.error("Error al obtener la lista de medios:", error));
+                };
+
+                onMounted(fetchMedia);
+                watch(mediaType, fetchMedia);
+
+                return {
+                    mediaType,
+                    mediaList,
+                    fetchMedia
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

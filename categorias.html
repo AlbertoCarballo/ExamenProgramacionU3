@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp, ref, onMounted } = Vue;
+  
+      createApp({
+        setup() {
+          const categoryId = localStorage.getItem("selectedCategoryId"); 
+          const categoryName = ref('');
+          const movies = ref([]);
+          const tvShows = ref([]);
+  
+          const fetchCategoryName = () => {
+            const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
+            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
+  
+            fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=es-ES`, {
+              headers: { Authorization: apiToken }
+            })
+              .then(response => response.json())
+              .then(data => {
+                const genre = data.genres.find(genre => genre.id === Number(categoryId));
+                if (genre) categoryName.value = genre.name;
+              });
+  
+            fetch(`https://api.themoviedb.org/3/genre/tv/list?api_key=${apiKey}&language=es-ES`, {
+              headers: { Authorization: apiToken }
+            })
+              .then(response => response.json())
+              .then(data => {
+                const genre = data.genres.find(genre => genre.id === Number(categoryId));
+                if (genre) categoryName.value = genre.name;
+              });
+          };
+  
+          const fetchMovies = () => {
+            const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
+            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
+  
+            fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=es-ES&with_genres=${categoryId}`, {
+              headers: { Authorization: apiToken }
+            })
+              .then(response => response.json())
+              .then(data => {
+                movies.value = data.results;
+              });
+          };
+  
+          const fetchTVShows = () => {
+            const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
+            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
+  
+            fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=es-ES&with_genres=${categoryId}`, {
+              headers: { Authorization: apiToken }
+            })
+              .then(response => response.json())
+              .then(data => {
+                tvShows.value = data.results;
+              });
+          };
+  
+          onMounted(() => {
+            if (!categoryId) {
+              alert("No se seleccionó ninguna categoría");
+              window.location.href = "index.html";
+              return;
+            }
+  
+            fetchCategoryName();
+            fetchMovies();
+            fetchTVShows();
+          });
+  
+          return {
+            categoryName,
+            movies,
+            tvShows
+          };
+        }
+      }).mount('#app');
+    </script>
+</body>
+</html>
