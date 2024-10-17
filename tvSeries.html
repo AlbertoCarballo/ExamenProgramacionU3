@@ -63,6 +63,30 @@
         </div>
       </div>
     </div>
+
+    <br>
+
+    <div class="recommendation">
+      <h2>Recomendaciones</h2>
+      <div class="card-recommendation-container">
+        <div class="card-recommendation" v-for="recommendation in recommendation" :key="recommendation.id">
+          <div class="image-container">
+            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path"
+              style="width:100%; height:auto;">
+          </div>
+          <div class="info">
+            <h3>{{ recommendation.name }}</h3>
+            <div class="rating">
+              <span>{{ recommendation.vote_average * 10 }}%</span>
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: (recommendation.vote_average * 10) + '%' }"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </div>
 
 
@@ -84,6 +108,7 @@
         const genres = ref([])
         const favoriteFlag = ref(0);
         const favorite = ref("")
+        const recommendation = ref([])
 
         const ratings = ref(JSON.parse(localStorage.getItem('ratings')) || [])
 
@@ -98,7 +123,8 @@
           calificar,
           ratings,
           genres,
-          favorite
+          favorite,
+          recommendation
         }
 
       },
@@ -199,7 +225,7 @@
             .then((result) => { console.log(result) })
             .catch((error) => console.error(error));
 
-          
+
         }
 
 
@@ -229,9 +255,6 @@
         fetch(`https://api.themoviedb.org/3//tv/${idPelicula}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
-            console.log("hola")
-
-
             this.genres = result.genres
             this.creators = result.created_by
             console.log(this.genres)
@@ -286,7 +309,6 @@
             // console.log(result);
             console.log("serie")
             const movie = result.results.find(movie => movie.id == idPelicula);
-            console.log(movie)
             if (movie) {
               this.calificar = movie.rating * 10;
             } else {
@@ -310,16 +332,31 @@
           .then((result) => {
             const serie = result.results.find(serie => serie.id == idPelicula);
             if (serie) {
-              this.favoriteFlag=1
-              this.favorite="Remove from Favorite"
+              this.favoriteFlag = 1
+              this.favorite = "Remove from Favorite"
             } else {
-              this.favoriteFlag=0
-              this.favorite="Add to Favorite"
+              this.favoriteFlag = 0
+              this.favorite = "Add to Favorite"
             }
-            // const movie = result.results.find(movie => movie.id == idPelicula);
           })
           .catch((error) => console.error(error));
 
+        const myHeaders5 = new Headers();
+        myHeaders5.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions5 = {
+          method: "GET",
+          headers: myHeaders5,
+          redirect: "follow"
+        };
+
+        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/recommendations`, requestOptions5)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result.results)
+            this.recommendation=result.results
+          })
+          .catch((error) => console.error(error));
 
 
       }
