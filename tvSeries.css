@@ -2,7 +2,7 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    background-image: url('fondoMovie.jpg');
+    background-image: url('fondoMovie.jpg'); /* Ajusta la ruta si es necesario */
     background-repeat: no-repeat;
     margin: 0;
     font-family: Arial, sans-serif;
@@ -129,11 +129,7 @@ body {
     padding: 5px;
 }
 
-.actor span,
-.director span {
-    display: inline;
-    margin-right: 50px;
-}
+
 
 .sinopsis {
     margin-right: 10px;
@@ -141,4 +137,85 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
 
+}
+
+.director {
+    display: flex;
+    flex-wrap: nowrap !important; /* Asegura que los elementos estén en una sola fila */
+    margin-right: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.director span {
+    display: inline-block; /* Hace que los elementos se alineen en fila */
+    margin-right: 20px; /* Espacio entre cada director */
+}
+
+.reparto-container {
+    text-align: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.reparto {
+    display: flex; /* Usar flexbox para el diseño horizontal */
+    overflow-x: auto; /* Habilitar scroll horizontal */
+    gap: 15px; /* Espaciado entre las tarjetas */
+    padding: 10px; /* Espaciado interno */
+    margin-top: 20px; /* Espacio superior */
+    scroll-behavior: smooth; /* Desplazamiento suave */
+    white-space: nowrap; /* Evitar que los elementos se rompan a la siguiente línea */
+}
+
+.reparto::-webkit-scrollbar {
+    height: 8px; /* Altura de la barra de scroll */
+}
+
+.reparto::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Color de la barra */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.actor-card {
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    width: 150px; /* Ancho fijo de las tarjetas */
+    flex-shrink: 0; /* No permitir que las tarjetas se reduzcan */
+    text-align: center; /* Centrar texto */
+}
+
+.actor-card img {
+    width: 100%; /* Imagen ocupa el 100% del ancho */
+    border-radius: 8px; /* Bordes redondeados para la imagen */
+}
+
+.actor-card h3 {
+    font-size: 1rem; /* Tamaño de fuente para el nombre del actor */
+    margin: 10px 0 5px 0; /* Margen superior e inferior */
+}
+
+.actor-card p {
+    font-size: 0.9rem; /* Tamaño de fuente para el rol del actor */
+    color: #000; /* Color del texto del rol */
+}
+
+.ver-mas {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.ver-mas a {
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: bold;
+}
+
+.ver-mas a:hover {
+    color: #004499;
 }

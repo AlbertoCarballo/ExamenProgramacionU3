@@ -25,19 +25,19 @@
 
       <div class="info-container">
         <h1 v-model="titular"> {{titular}}</h1>
+        <div class="genres" v-for="genre in genres">
+          <span>{{genre.name}}</span>
+        </div>
         <div class="sinopsis">
           <span> Sinopsis <br> {{ sinopsis }}</span>
         </div>
 
-        <div class="director" v-for="directors in director">
-          <span>{{ directors.trabajo }}: <br> {{ directors.nombre }}</span>
+        <div class="director" v-for="creator in creators">
+          <span>{{ creator.name }}: <br> creador </span>
         </div>
 
         <div class="actores">
           <div class="actor" v-for="actor in actores">
-            <span>{{ actor.nombre }} </span>
-            <br>
-            <span> {{ actor.papel }}</span>
           </div>
         </div>
       </div>
@@ -51,7 +51,17 @@
         <button class="borrar-btn" @click="borrarCalificacion">Borrar Calificación</button>
       </div>
     </div>
-  </div>
+    <div class="reparto-container">
+      <h2>Reparto de la serie</h2>
+      <div class="reparto">
+        <div class="actor-card" v-for="casting in cast">
+          <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + casting.profile_path"
+            style="width:100%; height:auto;">
+          <h3>{{casting.name}}</h3>
+          <p>{{casting.total_episode_count}} Episodios</p>
+        </div>
+      </div>
+    </div>
   </div>
 
 
@@ -63,26 +73,28 @@
       setup() {
 
         const name_app = ref('Mi primer app')
-        const actores = ref([])
-        const director = ref([])
+        const cast = ref([])
+        const creators = ref([])
         const titular = ref("")
         const img = ref("")
         const img2 = ref("")
         const sinopsis = ref("")
         const calificar = ref(50);
+        const genres = ref([])
 
         const ratings = ref(JSON.parse(localStorage.getItem('ratings')) || [])
 
         return {
           name_app,
-          actores,
-          director,
+          cast,
+          creators,
           titular,
           img,
           img2,
           sinopsis,
           calificar,
-          ratings
+          ratings,
+          genres
         }
 
       },
@@ -108,7 +120,7 @@
           };
 
           const session = localStorage.getItem("session");
-          fetch(`https://api.themoviedb.org/3//movie/${idPelicula}/rating?session_id=${session}`, requestOptions)
+          fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/rating?session_id=${session}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
               console.log(result.success)
@@ -140,7 +152,7 @@
           };
 
           const session = localStorage.getItem("session");
-          fetch(`https://api.themoviedb.org/3//movie/${idPelicula}/rating?session_id=${session}`, requestOptions)
+          fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/rating?session_id=${session}`, requestOptions)
             .then((response) => response.json())
             .then((result) => console.log(result))
             .catch((error) => console.error(error));
@@ -170,7 +182,7 @@
           redirect: "follow"
         };
 
-        
+
         fetch(`https://api.themoviedb.org/3/account/${username}/rated/tv?session_id=${session}`, requestOptions3)
           .then((response) => response.json())
           .then((result) => {
@@ -179,9 +191,9 @@
             const movie = result.results.find(movie => movie.id == idPelicula);
             console.log(movie)
             if (movie) {
-              this.calificar = movie.rating * 10; 
+              this.calificar = movie.rating * 10;
             } else {
-              this.calificar = 0; 
+              this.calificar = 0;
             }
 
           })
@@ -190,6 +202,7 @@
         if (is_log == null && username == null) {
           window.location.href = "index.html";
         }
+
 
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
@@ -200,33 +213,20 @@
           redirect: "follow"
         };
 
-        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/credits`, requestOptions)
+        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
-            for (let index = 0; index < 5; index++) {
-              this.actores.push({
-                nombre: result.cast[index].name,
-                papel: "como: " + result.cast[index].character
-              })
-              for (let index = 0; index < rating.length; index++) {
-                console.log(rating[index]);
-
-              }
-            }
+            console.log("hola")
 
 
-            for (let index = 0; index < result.crew.length; index++) {
-              if (result.crew[index].job == "Director") {
-                this.director.push({
-                  nombre: result.crew[index].name,
-                  trabajo: result.crew[index].job
-                })
-
-              }
-
-            }
+            this.genres = result.genres
+            this.creators = result.created_by
+            console.log(this.genres)
+            this.titular = result.name;
+            this.img = result.poster_path;
+            this.img2 = result.backdrop_path;
+            this.sinopsis = result.overview;
           })
-          .catch((error) => console.error(error));
 
         const myHeaders2 = new Headers();
         myHeaders2.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
@@ -237,19 +237,15 @@
           redirect: "follow"
         };
 
-        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}`, requestOptions2)
+        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/aggregate_credits`, requestOptions2)
           .then((response) => response.json())
           .then((result) => {
-            console.log("hola")
-            console.log(result)
-            this.titular = result.original_title;
-                this.img = result.poster_path;
-                this.img2 = result.backdrop_path;
-                this.sinopsis = result.overview;
 
+            console.log(result.cast)
 
-
+            this.cast = result.cast
           })
+          .catch((error) => console.error(error));
 
 
       }
