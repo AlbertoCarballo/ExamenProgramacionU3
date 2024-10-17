@@ -28,17 +28,16 @@
         <div class="genres" v-for="genre in genres">
           <span>{{genre.name}}</span>
         </div>
+        <button class="favorite" @click="addFavorite">
+          <span> {{ favorite }} </span>
+        </button>
+
         <div class="sinopsis">
           <span> Sinopsis <br> {{ sinopsis }}</span>
         </div>
 
         <div class="director" v-for="creator in creators">
           <span>{{ creator.name }}: <br> creador </span>
-        </div>
-
-        <div class="actores">
-          <div class="actor" v-for="actor in actores">
-          </div>
         </div>
       </div>
     </div>
@@ -83,6 +82,8 @@
         const sinopsis = ref("")
         const calificar = ref(50);
         const genres = ref([])
+        const favoriteFlag = ref(0);
+        const favorite = ref("")
 
         const ratings = ref(JSON.parse(localStorage.getItem('ratings')) || [])
 
@@ -96,7 +97,8 @@
           sinopsis,
           calificar,
           ratings,
-          genres
+          genres,
+          favorite
         }
 
       },
@@ -144,6 +146,8 @@
 
           const urlParams = new URLSearchParams(window.location.search);
           const idPelicula = urlParams.get('id');
+          const session = localStorage.getItem("session");
+
           const myHeaders = new Headers();
           myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
 
@@ -153,7 +157,6 @@
             redirect: "follow"
           };
 
-          const session = localStorage.getItem("session");
           fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/rating?session_id=${session}`, requestOptions)
             .then((response) => response.json())
             .then((result) => console.log(result))
@@ -161,46 +164,54 @@
           this.calificar = 0;
 
           alert("tu onda ha sido destruida.");
+        },
+
+        addFavorite() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const idPelicula = urlParams.get('id');
+          const session = localStorage.getItem("session");
+          let username = localStorage.getItem("username");
+
+
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+          this.favoriteFlag = this.favoriteFlag === 1 ? 0 : 1;
+          this.favorite = this.favoriteFlag === 1 ? "Remove from Favorite" : "Add to Favorite";
+
+
+
+          const raw = JSON.stringify({
+            "media_type": "tv",
+            "media_id": idPelicula,
+            "favorite": this.favoriteFlag === 1 ? true : false
+          });
+
+          const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+          };
+
+          fetch(`https://api.themoviedb.org/3//account/${idPelicula}/favorite?session_id=${session}`, requestOptions)
+            .then((response) => response.json())
+            .then((result) => { console.log(result) })
+            .catch((error) => console.error(error));
+
+          
         }
+
+
       },
       mounted() {
-
-        console.log("Hola")
-
         const urlParams = new URLSearchParams(window.location.search)
         const idPelicula = urlParams.get('id')
-
-        console.log(idPelicula)
         let is_log = localStorage.getItem("is_log");
         let username = localStorage.getItem("username");
-
         const session = localStorage.getItem("session");
-        const myHeaders3 = new Headers();
-        myHeaders3.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
 
-        const requestOptions3 = {
-          method: "GET",
-          headers: myHeaders3,
-          redirect: "follow"
-        };
-
-
-        fetch(`https://api.themoviedb.org/3/account/${username}/rated/tv?session_id=${session}`, requestOptions3)
-          .then((response) => response.json())
-          .then((result) => {
-            // console.log(result);
-            console.log("serie")
-            const movie = result.results.find(movie => movie.id == idPelicula);
-            console.log(movie)
-            if (movie) {
-              this.calificar = movie.rating * 10;
-            } else {
-              this.calificar = 0;
-            }
-
-          })
-          .catch((error) => console.error(error));
-
+        this.favorite = this.favoriteFlag === 0 ? "Remove from Favorite" : "Add to Favorite";
         if (is_log == null && username == null) {
           window.location.href = "index.html";
         }
@@ -245,12 +256,12 @@
 
             if (result.cast) {
               this.cast = result.cast.map(actor => {
-                const characterName = actor.roles.length > 0 ? actor.roles[0].character : ""; 
+                const characterName = actor.roles.length > 0 ? actor.roles[0].character : "";
                 return {
                   id: actor.id,
                   name: actor.name,
                   profile_path: actor.profile_path,
-                  character: characterName 
+                  character: characterName
                 };
               });
             }
@@ -259,6 +270,56 @@
             console.log(this.cast);
           })
           .catch((error) => console.error(error));
+        const myHeaders3 = new Headers();
+        myHeaders3.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions3 = {
+          method: "GET",
+          headers: myHeaders3,
+          redirect: "follow"
+        };
+
+
+        fetch(`https://api.themoviedb.org/3/account/${username}/rated/tv?session_id=${session}`, requestOptions3)
+          .then((response) => response.json())
+          .then((result) => {
+            // console.log(result);
+            console.log("serie")
+            const movie = result.results.find(movie => movie.id == idPelicula);
+            console.log(movie)
+            if (movie) {
+              this.calificar = movie.rating * 10;
+            } else {
+              this.calificar = 0;
+            }
+
+          })
+          .catch((error) => console.error(error));
+
+        const myHeaders4 = new Headers();
+        myHeaders4.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions4 = {
+          method: "GET",
+          headers: myHeaders4,
+          redirect: "follow"
+        };
+
+        fetch(`https://api.themoviedb.org/3//account/${username}/favorite/tv?session_id=${session}`, requestOptions4)
+          .then((response) => response.json())
+          .then((result) => {
+            const serie = result.results.find(serie => serie.id == idPelicula);
+            if (serie) {
+              this.favoriteFlag=1
+              this.favorite="Remove from Favorite"
+            } else {
+              this.favoriteFlag=0
+              this.favorite="Add to Favorite"
+            }
+            // const movie = result.results.find(movie => movie.id == idPelicula);
+          })
+          .catch((error) => console.error(error));
+
 
 
       }
