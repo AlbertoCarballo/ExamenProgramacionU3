@@ -1,58 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> 
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Medios por Palabra Clave</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+        .media-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .media-item {
+            width: 200px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+        }
+        .media-item img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .toggle-button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 20px 0;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
+  <div id="app" class="container">
+    <h1>Listado de {{ mediaType === 'movie' ? 'Películas' : 'Series' }} por Palabra Clave</h1>
     
+    <button class="toggle-button" @click="toggleMediaType">
+      {{ mediaType === 'movie' ? 'Ver Series' : 'Ver Películas' }}
+    </button>
 
+    <div class="media-list">
+      <div class="media-item" v-for="media in mediaList" :key="media.id">
+        <img :src="'https://image.tmdb.org/t/p/w200' + media.poster_path" alt="Media Poster">
+        <p>{{ mediaType === 'movie' ? media.title : media.name }}</p>
+      </div>
+    </div>
+  </div>
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script>
-        const { createApp, ref, onMounted, watch } = Vue;
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const { createApp, ref, onMounted, watch } = Vue;
 
-        createApp({
-            setup() {
-                const mediaType = ref("movie");
-                const mediaList = ref([]);
-                const keywordId = ref(localStorage.getItem("selectedKeywordId"));
-                const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
-                const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
+    createApp({
+        setup() {
+            const mediaType = ref("movie"); // Controla si se muestran películas o series
+            const mediaList = ref([]);
+            const keywordId = ref('325789'); /*localStorage.getItem("selectedKeywordId")*/
+            const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
+            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
 
-                const fetchMedia = () => {
-                    if (!keywordId.value) {
-                        console.error("No se ha proporcionado un ID de palabra clave.");
-                        return;
+            const fetchMedia = () => {
+                if (!keywordId.value) {
+                    console.error("No se ha proporcionado un ID de palabra clave.");
+                    return;
+                }
+
+                const url = `https://api.themoviedb.org/3/discover/${mediaType.value}?api_key=${apiKey}&language=es-ES&with_keywords=${keywordId.value}`;
+
+                fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": apiToken,
+                        "Content-Type": "application/json;charset=utf-8"
                     }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    mediaList.value = data.results;
+                })
+                .catch(error => console.error("Error al obtener la lista de medios:", error));
+            };
 
-                    const url = `https://api.themoviedb.org/3/discover/${mediaType.value}?api_key=${apiKey}&language=es-ES&with_keywords=${keywordId.value}`;
+            const toggleMediaType = () => {
+                mediaType.value = mediaType.value === 'movie' ? 'tv' : 'movie';
+            };
 
-                    fetch(url, {
-                        method: "GET",
-                        headers: {
-                            "Authorization": apiToken,
-                            "Content-Type": "application/json;charset=utf-8"
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        mediaList.value = data.results;
-                    })
-                    .catch(error => console.error("Error al obtener la lista de medios:", error));
-                };
+            onMounted(fetchMedia);
+            watch(mediaType, fetchMedia);
 
-                onMounted(fetchMedia);
-                watch(mediaType, fetchMedia);
-
-                return {
-                    mediaType,
-                    mediaList,
-                    fetchMedia
-                };
-            }
-        }).mount('#app');
-    </script>
+            return {
+                mediaType,
+                mediaList,
+                toggleMediaType
+            };
+        }
+    }).mount('#app');
+  </script>
 </body>
 </html>
