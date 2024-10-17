@@ -1,96 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> 
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Películas y Series por Categoría</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+        .category-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .media-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .media-item {
+            width: 200px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+        }
+        .media-item img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .toggle-button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 20px 0;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    
+  <div id="app" class="container">
+    <div v-if="categoryId">
+      <div class="category-title">Categoría ID: {{ categoryId }}</div>
+      
+      <button class="toggle-button" @click="toggleView">
+        {{ showMovies ? 'Ver Series' : 'Ver Películas' }}
+      </button>
+      
+      <div v-if="showMovies">
+        <h2>Películas</h2>
+        <div class="media-list">
+          <div class="media-item" v-for="movie in movies" :key="movie.id">
+            <img :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path" alt="Movie Poster">
+            <p>{{ movie.title }}</p>
+          </div>
+        </div>
+      </div>
 
+      <div v-else>
+        <h2>Series</h2>
+        <div class="media-list">
+          <div class="media-item" v-for="show in shows" :key="show.id">
+            <img :src="'https://image.tmdb.org/t/p/w200' + show.poster_path" alt="Show Poster">
+            <p>{{ show.name }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <p>No se ha seleccionado ninguna categoría.</p>
+    </div>
+  </div>
 
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const { createApp, ref, onMounted } = Vue;
 
+    createApp({
+      setup() {
+        const categoryId = ref('35'); /*localStorage.getItem("selectedCategoryId") */ 
+        const movies = ref([]);
+        const shows = ref([]);
+        const showMovies = ref(true); 
+        const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
+        const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
 
-
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script>
-      const { createApp, ref, onMounted } = Vue;
-  
-      createApp({
-        setup() {
-          const categoryId = localStorage.getItem("selectedCategoryId"); 
-          const categoryName = ref('');
-          const movies = ref([]);
-          const tvShows = ref([]);
-  
-          const fetchCategoryName = () => {
-            const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
-            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
-  
-            fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=es-ES`, {
-              headers: { Authorization: apiToken }
-            })
-              .then(response => response.json())
-              .then(data => {
-                const genre = data.genres.find(genre => genre.id === Number(categoryId));
-                if (genre) categoryName.value = genre.name;
-              });
-  
-            fetch(`https://api.themoviedb.org/3/genre/tv/list?api_key=${apiKey}&language=es-ES`, {
-              headers: { Authorization: apiToken }
-            })
-              .then(response => response.json())
-              .then(data => {
-                const genre = data.genres.find(genre => genre.id === Number(categoryId));
-                if (genre) categoryName.value = genre.name;
-              });
-          };
-  
-          const fetchMovies = () => {
-            const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
-            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
-  
-            fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=es-ES&with_genres=${categoryId}`, {
-              headers: { Authorization: apiToken }
-            })
-              .then(response => response.json())
-              .then(data => {
-                movies.value = data.results;
-              });
-          };
-  
-          const fetchTVShows = () => {
-            const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
-            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
-  
-            fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=es-ES&with_genres=${categoryId}`, {
-              headers: { Authorization: apiToken }
-            })
-              .then(response => response.json())
-              .then(data => {
-                tvShows.value = data.results;
-              });
-          };
-  
-          onMounted(() => {
-            if (!categoryId) {
-              alert("No se seleccionó ninguna categoría");
-              window.location.href = "index.html";
-              return;
+        const fetchMovies = () => {
+          fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=es-ES&with_genres=${categoryId.value}&sort_by=popularity.desc`, {
+            method: "GET",
+            headers: {
+              "Authorization": apiToken,
+              "Content-Type": "application/json;charset=utf-8"
             }
-  
-            fetchCategoryName();
+          })
+          .then(response => response.json())
+          .then(data => {
+            movies.value = data.results;
+          })
+          .catch(error => console.error("Error al obtener películas:", error));
+        };
+
+        const fetchShows = () => {
+          fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=es-ES&with_genres=${categoryId.value}&sort_by=popularity.desc`, {
+            method: "GET",
+            headers: {
+              "Authorization": apiToken,
+              "Content-Type": "application/json;charset=utf-8"
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            shows.value = data.results;
+          })
+          .catch(error => console.error("Error al obtener series:", error));
+        };
+
+        const toggleView = () => {
+          showMovies.value = !showMovies.value;
+        };
+
+        onMounted(() => {
+          if (categoryId.value) {
             fetchMovies();
-            fetchTVShows();
-          });
-  
-          return {
-            categoryName,
-            movies,
-            tvShows
-          };
-        }
-      }).mount('#app');
-    </script>
+            fetchShows();
+          } else {
+            console.error("No se ha seleccionado una categoría.");
+          }
+        });
+
+        return {
+          categoryId,
+          movies,
+          shows,
+          showMovies,
+          toggleView
+        };
+      }
+    }).mount('#app');
+  </script>
 </body>
 </html>
