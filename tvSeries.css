@@ -1,5 +1,5 @@
 body {
-    display: flex;
+    display: block;
     justify-content: flex-start;
     align-items: flex-start;
     background-image: url('fondoMovie.jpg'); /* Ajusta la ruta si es necesario */
@@ -141,7 +141,7 @@ body {
 
 .director {
     display: flex;
-    flex-wrap: nowrap !important; /* Asegura que los elementos estén en una sola fila */
+    flex-wrap: nowrap !important; 
     margin-right: 10px;
     font-size: 1.2rem;
     font-weight: bold;
@@ -150,59 +150,60 @@ body {
 }
 
 .director span {
-    display: inline-block; /* Hace que los elementos se alineen en fila */
-    margin-right: 20px; /* Espacio entre cada director */
+    display: inline-block; 
+    margin-right: 20px; 
 }
 
 .reparto-container {
+    width: 60%;
     text-align: center;
     padding: 20px;
     font-family: Arial, sans-serif;
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 .reparto {
-    display: flex; /* Usar flexbox para el diseño horizontal */
-    overflow-x: auto; /* Habilitar scroll horizontal */
-    gap: 15px; /* Espaciado entre las tarjetas */
-    padding: 10px; /* Espaciado interno */
-    margin-top: 20px; /* Espacio superior */
-    scroll-behavior: smooth; /* Desplazamiento suave */
-    white-space: nowrap; /* Evitar que los elementos se rompan a la siguiente línea */
+    display: flex; 
+    overflow-x: auto; 
+    gap: 15px; 
+    padding: 10px;
+    margin-top: 20px; 
+    scroll-behavior: smooth; 
+    white-space: nowrap; 
 }
 
 .reparto::-webkit-scrollbar {
-    height: 8px; /* Altura de la barra de scroll */
+    height: 8px; 
 }
 
 .reparto::-webkit-scrollbar-thumb {
-    background-color: #ccc; /* Color de la barra */
-    border-radius: 10px; /* Bordes redondeados */
+    background-color: #ccc; 
+    border-radius: 10px; 
 }
 
 .actor-card {
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 10px; /* Espaciado interno */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
-    width: 150px; /* Ancho fijo de las tarjetas */
-    flex-shrink: 0; /* No permitir que las tarjetas se reduzcan */
-    text-align: center; /* Centrar texto */
+    background-color: #fff; 
+    border-radius: 10px; 
+    padding: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 150px; 
+    flex-shrink: 0; 
+    text-align: center; 
 }
 
 .actor-card img {
-    width: 100%; /* Imagen ocupa el 100% del ancho */
-    border-radius: 8px; /* Bordes redondeados para la imagen */
+    width: 100%; 
+    border-radius: 8px; 
 }
 
 .actor-card h3 {
-    font-size: 1rem; /* Tamaño de fuente para el nombre del actor */
-    margin: 10px 0 5px 0; /* Margen superior e inferior */
+    font-size: 1rem;
+    margin: 10px 0 5px 0; 
 }
 
 .actor-card p {
-    font-size: 0.9rem; /* Tamaño de fuente para el rol del actor */
-    color: #000; /* Color del texto del rol */
+    font-size: 0.9rem; 
+    color: #000; 
 }
 
 .ver-mas {

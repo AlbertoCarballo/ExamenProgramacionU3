@@ -53,11 +53,13 @@
     </div>
     <div class="reparto-container">
       <h2>Reparto de la serie</h2>
+      <br>
       <div class="reparto">
         <div class="actor-card" v-for="casting in cast">
           <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + casting.profile_path"
             style="width:100%; height:auto;">
           <h3>{{casting.name}}</h3>
+          <p>{{casting.character}}</p>
           <p>{{casting.total_episode_count}} Episodios</p>
         </div>
       </div>
@@ -241,9 +243,20 @@
           .then((response) => response.json())
           .then((result) => {
 
-            console.log(result.cast)
+            if (result.cast) {
+              this.cast = result.cast.map(actor => {
+                const characterName = actor.roles.length > 0 ? actor.roles[0].character : ""; 
+                return {
+                  id: actor.id,
+                  name: actor.name,
+                  profile_path: actor.profile_path,
+                  character: characterName 
+                };
+              });
+            }
 
-            this.cast = result.cast
+            console.log("Cast después de mapear:", this.cast);
+            console.log(this.cast);
           })
           .catch((error) => console.error(error));
 
