@@ -82,6 +82,7 @@ José Eduardo Hirales Núñez
         }
 
         .button-container {
+            margin-top: 15px;
             display: flex;
             justify-content: center;
             width: 100%;
@@ -202,7 +203,7 @@ José Eduardo Hirales Núñez
 
                 <h4>Rate this movie:</h4>
                 <div class="stars">
-                    <span v-for="star in 5" :key="star" @click="setRating(star)"
+                    <span v-for="star in 10" :key="star" @click="setRating(star)"
                         :class="['star', { 'filled': star <= rating }]">
                         ★
                     </span>
