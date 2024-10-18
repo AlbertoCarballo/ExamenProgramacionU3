@@ -11,15 +11,11 @@
             margin: auto;
             padding: 20px;
         }
-        .category-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
         .media-list {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            margin-top: 20px;
         }
         .media-item {
             width: 200px;
@@ -33,67 +29,49 @@
             width: 100%;
             border-radius: 8px;
         }
-        .toggle-button {
-            padding: 10px 15px;
-            font-size: 16px;
+        .radio-group {
             margin: 20px 0;
-            cursor: pointer;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
         }
     </style>
 </head>
 <body>
   <div id="app" class="container">
-    <div v-if="categoryId">
-      <div class="category-title">Categoría ID: {{ categoryId }}</div>
-      
-      <button class="toggle-button" @click="toggleView">
-        {{ showMovies ? 'Ver Series' : 'Ver Películas' }}
-      </button>
-      
-      <div v-if="showMovies">
-        <h2>Películas</h2>
-        <div class="media-list">
-          <div class="media-item" v-for="movie in movies" :key="movie.id">
-            <img :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path" alt="Movie Poster">
-            <p>{{ movie.title }}</p>
-          </div>
-        </div>
-      </div>
+    <h1>Listado por Categoría</h1>
 
-      <div v-else>
-        <h2>Series</h2>
-        <div class="media-list">
-          <div class="media-item" v-for="show in shows" :key="show.id">
-            <img :src="'https://image.tmdb.org/t/p/w200' + show.poster_path" alt="Show Poster">
-            <p>{{ show.name }}</p>
-          </div>
-        </div>
-      </div>
+    <div class="radio-group">
+      <label>
+        <input type="radio" value="movie" v-model="mediaType" />
+        Películas
+      </label>
+      <label>
+        <input type="radio" value="tv" v-model="mediaType" />
+        Series
+      </label>
     </div>
-    <div v-else>
-      <p>No se ha seleccionado ninguna categoría.</p>
+
+    <div class="media-list">
+      <div class="media-item" v-for="media in mediaList" :key="media.id">
+        <img :src="'https://image.tmdb.org/t/p/w200' + media.poster_path" alt="Media Poster">
+        <p>{{ mediaType === 'movie' ? media.title : media.name }}</p>
+      </div>
     </div>
   </div>
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script>
-    const { createApp, ref, onMounted } = Vue;
+    const { createApp, ref, onMounted, watch } = Vue;
 
     createApp({
       setup() {
-        const categoryId = ref('35'); /*localStorage.getItem("selectedCategoryId") */ 
-        const movies = ref([]);
-        const shows = ref([]);
-        const showMovies = ref(true); 
+        const mediaType = ref("movie");
+        const mediaList = ref([]);
+        const categoryId = ref("35"); /*localStorage.getItem("selectedCategoryId") */
         const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
         const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
 
-        const fetchMovies = () => {
-          fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=es-ES&with_genres=${categoryId.value}&sort_by=popularity.desc`, {
+        const fetchMedia = () => {
+          const url = `https://api.themoviedb.org/3/discover/${mediaType.value}?api_key=${apiKey}&language=es-ES&with_genres=${categoryId.value}`;
+          fetch(url, {
             method: "GET",
             headers: {
               "Authorization": apiToken,
@@ -102,45 +80,18 @@
           })
           .then(response => response.json())
           .then(data => {
-            movies.value = data.results;
+            mediaList.value = data.results;
           })
-          .catch(error => console.error("Error al obtener películas:", error));
+          .catch(error => console.error("Error al obtener medios:", error));
         };
 
-        const fetchShows = () => {
-          fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=es-ES&with_genres=${categoryId.value}&sort_by=popularity.desc`, {
-            method: "GET",
-            headers: {
-              "Authorization": apiToken,
-              "Content-Type": "application/json;charset=utf-8"
-            }
-          })
-          .then(response => response.json())
-          .then(data => {
-            shows.value = data.results;
-          })
-          .catch(error => console.error("Error al obtener series:", error));
-        };
-
-        const toggleView = () => {
-          showMovies.value = !showMovies.value;
-        };
-
-        onMounted(() => {
-          if (categoryId.value) {
-            fetchMovies();
-            fetchShows();
-          } else {
-            console.error("No se ha seleccionado una categoría.");
-          }
-        });
+        onMounted(fetchMedia);
+        watch(mediaType, fetchMedia);
 
         return {
-          categoryId,
-          movies,
-          shows,
-          showMovies,
-          toggleView
+          mediaType,
+          mediaList,
+          fetchMedia
         };
       }
     }).mount('#app');
