@@ -29,25 +29,25 @@
             width: 100%;
             border-radius: 8px;
         }
-        .toggle-button {
-            padding: 10px 15px;
-            font-size: 16px;
+        .radio-group {
             margin: 20px 0;
-            cursor: pointer;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
         }
     </style>
 </head>
 <body>
   <div id="app" class="container">
-    <h1>Listado de {{ mediaType === 'movie' ? 'Películas' : 'Series' }} por Palabra Clave</h1>
-    
-    <button class="toggle-button" @click="toggleMediaType">
-      {{ mediaType === 'movie' ? 'Ver Series' : 'Ver Películas' }}
-    </button>
+    <h1>Listado por Palabra Clave</h1>
+
+    <div class="radio-group">
+      <label>
+        <input type="radio" value="movie" v-model="mediaType" />
+        Películas
+      </label>
+      <label>
+        <input type="radio" value="tv" v-model="mediaType" />
+        Series
+      </label>
+    </div>
 
     <div class="media-list">
       <div class="media-item" v-for="media in mediaList" :key="media.id">
@@ -63,9 +63,9 @@
 
     createApp({
         setup() {
-            const mediaType = ref("movie"); // Controla si se muestran películas o series
+            const mediaType = ref("movie");
             const mediaList = ref([]);
-            const keywordId = ref('325789'); /*localStorage.getItem("selectedKeywordId")*/
+            const keywordId = ref("210024"); //localStorage.getItem("selectedKeywordId")
             const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
             const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
 
@@ -91,17 +91,12 @@
                 .catch(error => console.error("Error al obtener la lista de medios:", error));
             };
 
-            const toggleMediaType = () => {
-                mediaType.value = mediaType.value === 'movie' ? 'tv' : 'movie';
-            };
-
             onMounted(fetchMedia);
             watch(mediaType, fetchMedia);
 
             return {
                 mediaType,
-                mediaList,
-                toggleMediaType
+                mediaList
             };
         }
     }).mount('#app');
