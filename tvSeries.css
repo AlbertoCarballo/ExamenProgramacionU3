@@ -1,8 +1,9 @@
 body {
-    display: flex;
+    display: block;
     justify-content: flex-start;
     align-items: flex-start;
     background-image: url('fondoMovie.jpg');
+    /* Ajusta la ruta si es necesario */
     background-repeat: no-repeat;
     margin: 0;
     font-family: Arial, sans-serif;
@@ -129,11 +130,7 @@ body {
     padding: 5px;
 }
 
-.actor span,
-.director span {
-    display: inline;
-    margin-right: 50px;
-}
+
 
 .sinopsis {
     margin-right: 10px;
@@ -141,4 +138,126 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
 
+}
+
+.director {
+    display: flex;
+    flex-wrap: nowrap !important;
+    margin-right: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.director span {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.reparto-container {
+    width: 60%;
+    text-align: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: rgb(0, 0, 0);
+}
+
+.reparto {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 10px;
+    margin-top: 20px;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+}
+
+.reparto::-webkit-scrollbar {
+    height: 8px;
+}
+
+.reparto::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.actor-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.actor-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.actor-card h3 {
+    font-size: 1rem;
+    margin: 10px 0 5px 0;
+}
+
+.actor-card p {
+    font-size: 0.9rem;
+    color: #000;
+}
+
+.ver-mas {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.ver-mas a {
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: bold;
+}
+
+.ver-mas a:hover {
+    color: #004499;
+}
+
+
+.recommendation {
+    margin-left: 25px;
+    
+    width: 60%;
+}
+
+.card-recommendation-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+    scrollbar-width: thin;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    
+}
+
+.card-recommendation-container::-webkit-scrollbar {
+    height: 8px;
+    
+}
+
+.card-recommendation-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.card-recommendation-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.card-recommendation {
+    flex: 0 0 auto;
+    margin-right: 10px;
+    width: 150px;
 }
