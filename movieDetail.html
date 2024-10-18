@@ -226,7 +226,8 @@ José Eduardo Hirales Núñez
         <div class="recommendedMovieContainer">
             <h3>Recommended movies</h3>
             <div class="recommendedMovies">
-                <div class="recommendedMovie" v-for="(movie, index) in recommendedMovies.slice(0, 10)" :key="movie.id">
+                <div class="recommendedMovie" v-for="(movie, index) in recommendedMovies.slice(0, 10)" :key="movie.id"
+                    @click="viewRecommendedMovie(movie.id)" style="cursor: pointer;">
                     <img :src="'https://image.tmdb.org/t/p/w500' + movie.backdrop_path" alt="movie.title"
                         v-if="movie.backdrop_path">
                     <h2>{{ movie.title }}</h2>
@@ -315,7 +316,10 @@ José Eduardo Hirales Núñez
                         .catch(error => {
                             console.log("Error fetching recommended movies:", error);
                         });
-                }
+                },
+                    viewRecommendedMovie(movieId) {
+                        window.location.href = `?id=${movieId}`;
+                    }
             },
             mounted() {
                 this.movieId = this.getMovieIdFromUrl();
