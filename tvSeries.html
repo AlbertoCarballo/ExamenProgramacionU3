@@ -25,6 +25,13 @@
 
       <div class="info-container">
         <h1 v-model="titular"> {{titular}}</h1>
+
+        <div class="keyword-bar">
+          <span class="keyword"> 
+            adios
+          </span>
+        </div>
+
         <div class="genres" v-for="genre in genres">
           <span>{{genre.name}}</span>
         </div>
@@ -41,15 +48,23 @@
         </div>
       </div>
     </div>
+    <div class="vertical-bar">
+      <h2>Barra Vertical</h2>
+      <p>Contenido de la barra aquí.</p>
+    </div>
+    <!-- <
+      <!-- Agrega más contenido o enlaces según sea necesario -->
+
 
     <div class="puntaje-container">
-      <label>Califica esta película (0 - 100): {{calificar}}</label>
+      <h2>Califica esta película (0 - 100): {{calificar}}</h2>
       <input type="range" v-model.number="calificar" id="rating" min="0" max="100" step="5" class="slider">
       <div class="puntaje-btn">
         <button class="calificar-btn" @click="calificarPeli">Calificar</button>
         <button class="borrar-btn" @click="borrarCalificacion">Borrar Calificación</button>
       </div>
     </div>
+    
     <div class="reparto-container">
       <h2>Reparto de la serie</h2>
       <br>
@@ -74,7 +89,7 @@
             <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path"
               style="width:100%; height:auto;">
           </div>
-          <div class="info">
+          <div class="info-recommendation">
             <h3>{{ recommendation.name }}</h3>
             <div class="rating">
               <span>{{ recommendation.vote_average * 10 }}%</span>
@@ -86,7 +101,36 @@
         </div>
       </div>
     </div>
+    <br>
+
+    <div class="season-container">
+      <div class="header">Última temporada</div>
+
+      <div class="season-card" v-for="season in lastSeason">
+        <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path"
+          style="width: 300px; height:200px;">
+
+        <div class="season-card-content">
+          <h2>Temporada {{season.season_number}}</h2>
+          <div class="info">
+            <span class="rating">★ {{(season.vote_average)*10}}%</span>
+            {{season.air_date}} • {{episode_count}} Episodios
+          </div>
+          <div class="description">
+            Temporada 3 de Kuroko no Basket se estrenó el 10 enero 2015
+          </div>
+          <div class="episode-info">
+            <span>Many Times Over (3x25, 1 julio 2015)</span>
+            <span class="end-tag">Final de temporada</span>
+          </div>
+        </div>
+      </div>
+      <br>
+      <a class="view-seasons">Ver todas las Temporadas</a>
+    </div>
+    <br>
     
+
   </div>
 
 
@@ -109,6 +153,8 @@
         const favoriteFlag = ref(0);
         const favorite = ref("")
         const recommendation = ref([])
+        const seasons = ref([])
+        const lastSeason = ref([]);
 
         const ratings = ref(JSON.parse(localStorage.getItem('ratings')) || [])
 
@@ -124,7 +170,9 @@
           ratings,
           genres,
           favorite,
-          recommendation
+          recommendation,
+          seasons,
+          lastSeason
         }
 
       },
@@ -256,12 +304,17 @@
           .then((response) => response.json())
           .then((result) => {
             this.genres = result.genres
+            this.seasons = result.seasons
+            console.log("holiss")
             this.creators = result.created_by
-            console.log(this.genres)
+            console.log(this.seasons)
             this.titular = result.name;
             this.img = result.poster_path;
             this.img2 = result.backdrop_path;
             this.sinopsis = result.overview;
+            if (this.seasons.length > 0) {
+              this.lastSeason = [this.seasons[this.seasons.length - 1]];
+            }
           })
 
         const myHeaders2 = new Headers();
@@ -354,7 +407,7 @@
           .then((response) => response.json())
           .then((result) => {
             console.log(result.results)
-            this.recommendation=result.results
+            this.recommendation = result.results
           })
           .catch((error) => console.error(error));
 

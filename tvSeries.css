@@ -3,35 +3,58 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     background-image: url('fondoMovie.jpg');
-    /* Ajusta la ruta si es necesario */
     background-repeat: no-repeat;
     margin: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
 }
 
+
+#main {
+    display: flex;
+    margin-bottom: 20px; 
+    flex-direction: column;
+}
+
+.card-info-container {
+    flex: 1;
+}
+
+.vertical-bar {
+    width: 58%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
 .card-info-container {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: space-between;
-    margin-top: 150px;
+    justify-content: flex-start;
+    margin-top: 50px;
     margin-bottom: 20px;
     color: white;
-    width: 80%;
-    margin-left: 150px;
+    width: 58%;
+    margin-left: 0;
     background-color: rgba(0, 0, 0, 0.705);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.puntaje-container,
+.reparto-container,
+.recommendation {
+    margin-top: 20px; 
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1); 
     border-radius: 8px;
 }
 
-.puntaje-container {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 60px;
-    margin-left: 300px;
-    color: white;
+.puntaje-container,
+.reparto-container,
+.recommendation h2{
+color: white;
 }
 
 .puntaje-btn {
@@ -40,7 +63,7 @@ body {
 }
 
 .puntaje-btn button {
-    margin: 20px;
+    margin: 10px 10px 10px 0;
     width: 150px;
     height: 50px;
     font-size: 15px;
@@ -71,8 +94,8 @@ body {
     font-size: 30px;
     font-weight: 900;
     margin-right: 20px;
+    margin-bottom: 20px;
 }
-
 
 .card:hover {
     border-radius: 15px;
@@ -121,28 +144,24 @@ body {
 .actores,
 .director {
     display: flex;
-    flex-wrap: nowwrap;
+    flex-wrap: nowrap;
     margin-right: 10px;
     font-size: 1.2rem;
     font-weight: bold;
-
     border-radius: 20px;
     padding: 5px;
 }
-
-
 
 .sinopsis {
     margin-right: 10px;
     border-radius: 20px;
     font-size: 1.2rem;
     font-weight: bold;
-
 }
 
 .director {
     display: flex;
-    flex-wrap: nowrap !important;
+    flex-wrap: nowrap;
     margin-right: 10px;
     font-size: 1.2rem;
     font-weight: bold;
@@ -155,13 +174,7 @@ body {
     margin-right: 20px;
 }
 
-.reparto-container {
-    width: 60%;
-    text-align: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    color: rgb(0, 0, 0);
-}
+
 
 .reparto {
     display: flex;
@@ -208,7 +221,7 @@ body {
 }
 
 .ver-mas {
-    text-align: right;
+    text-align: left;
     margin-top: 10px;
 }
 
@@ -223,28 +236,18 @@ body {
 }
 
 
-.recommendation {
-    margin-left: 25px;
-    
-    width: 60%;
-}
 
 .card-recommendation-container {
     display: flex;
     overflow-x: auto;
-    padding: 10px 0;
     scrollbar-width: thin;
     background-color: white;
     border-radius: 10px;
-    padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
-    
 }
 
 .card-recommendation-container::-webkit-scrollbar {
     height: 8px;
-    
 }
 
 .card-recommendation-container::-webkit-scrollbar-thumb {
@@ -261,3 +264,103 @@ body {
     margin-right: 10px;
     width: 150px;
 }
+
+.season-container {
+    max-width: 700px;
+    margin: 50px 0;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.season-card {
+    display: flex;
+    align-items: flex-start;
+}
+
+.season-card img {
+    width: 120px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.season-card-content {
+    margin-left: 20px;
+}
+
+.season-card-content h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.rating {
+    background-color: #2e3b4e;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+
+.info {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.description {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #333;
+}
+
+.episode-info {
+    margin-top: 15px;
+}
+
+.episode-info span {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+.episode-info .end-tag {
+    background-color: #2e3b4e;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.view-seasons {
+    margin-top: 20px;
+    color: #2e3b4e;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.view-seasons:hover {
+    text-decoration: underline;
+}
+
+button.favorite {
+    margin-top: 20px;
+    background-color: #158aff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+} 
