@@ -1,5 +1,5 @@
 body {
-    background-color: #F3F8FF;
+    background-color: #1E201E !important;
 }
 
 .nav-bar {
@@ -13,7 +13,7 @@ body {
   }
 
   .navbar {
-    background-color: aquamarine !important;
+    background-color: #7E30E1 !important;
   }
 
   /* Añade un margen superior al contenido para evitar que quede oculto detrás de la navbar */
@@ -29,6 +29,8 @@ body {
     color: white;
     text-align: center;
     padding: 100px 20px;
+    margin-bottom: 20px;
+    margin-top: 0px;
   }
 
   .banner-content {
@@ -51,6 +53,98 @@ body {
     width: 60%;
   }
 
+  #btn-banner {
+    background-color: #7E30E1; /* Color inicial del botón */
+    border: none; /* Borde inicial */
+    color: white; /* Texto blanco */
+    padding: 10px 20px; /* Tamaño del botón */
+    font-size: 16px;
+    border-radius: 5px; /* Bordes redondeados */
+
+    transition: all 0.3s; /* Transición suave */
+  }
+  
+  #btn-banner:hover {
+    background: linear-gradient(144deg, #E26EE5, #7E30E1 50%, #49108B); /* Gradiente al hacer hover */
+    transform: scale(1.05); /* Aumenta el tamaño al 110% */
+  }
+  
+  h3 {
+    color: white !important;
+  }
+
+  #card {
+    flex: 0 0 auto; 
+    margin-right: 10px; 
+    width: 200px;
+    border: 1px;
+    border-radius: 15px; /* Esquinas redondeadas */
+    background: linear-gradient(144deg, #E26EE5, #7E30E1 50%, #49108B); /* Gradiente en el borde */
+    padding: 10px; /* Espacio alrededor para mostrar el borde */
+    position: relative; /* Para permitir el uso de ::before */
+    overflow: hidden; /* Para mantener el contenido dentro de los bordes redondeados */
+  }
+  
+  #card::before {
+    content: '';
+    position: absolute;
+    top: 5px; /* Ajusta para mantener el padding y evitar que se superponga */
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    background: white; /* Color de fondo de la tarjeta */
+    border-radius: 10px; /* Radio más pequeño que el borde externo */
+    z-index: 1; /* Colócalo detrás del contenido */
+  }
+  
+  #card-img {
+    width: 100%; 
+    border-radius: 10px; /* Mantén el redondeo de las esquinas internas */
+    position: relative;
+    z-index: 2; /* Colócalo sobre el pseudo-elemento */
+  }
+  
+  /* Estilos para el contenido */
+  .card__content {
+    position: relative;
+    z-index: 2; /* Coloca el contenido por encima del pseudo-elemento */
+  }
+  
+  .card__title {
+    font-size: 16px;
+    font-weight: bold;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.2em;
+    max-height: 2.4em;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    margin: 5px 0;
+  }
+  
+  .card__description {
+    font-size: 14px;
+    color: #555;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+
+  #row {
+    display: flex; 
+    flex-wrap: nowrap; 
+    overflow-x: auto; 
+    white-space: nowrap;
+  }
+
+  .section-container {
+    margint-top: 20px;
+    margin-bottom: 20px;
+  }
+  
 
 /* body {
     display: flex;

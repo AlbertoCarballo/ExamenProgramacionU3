@@ -12,11 +12,11 @@
 
 <body>
 
-  
-  
+
+
   <div id="main" class="container content">
     <div class="nav-bar">
-      <nav class="navbar navbar-expand-lg">
+      <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Navbar</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -56,22 +56,83 @@
         <p>Millones de películas, series y gente por descubrir. ¡Explora ya!</p>
         <form class="d-flex justify-content-center">
           <input id="input" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-          <button class="btn btn-primary" type="submit">Buscar</button>
+          <button id="btn-banner" class="btn btn-primary" type="submit">Buscar</button>
         </form>
       </div>
     </div>
-    <div class="row">
-      <h3>tendencias</h3>
+    <div class="section-container">
+      <h3>Tendencias</h3>
+      <div id="row" class="row">
+        <div id="card" class="card" v-for="pelicula in peliculas">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
+            v-bind:alt="pelicula.original_title" alt="">
+          <div class="card__content" @click="detallesPelicula(pelicula)">
+            <h6 class="card__title">
+              {{ pelicula.original_title }}
+            </h6>
+            <p class="card__description">
+              {{ pelicula.release_date }}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <h3>lo mas popular</h3>
+
+    <div class="section-container">
+      <h3>Popular</h3>
+      <div id="row" class="row">
+        <div id="card" class="card" v-for="pelicula in peliculas">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
+            v-bind:alt="pelicula.original_title" alt="">
+          <div class="card__content" @click="detallesPelicula(pelicula)">
+            <h6 class="card__title">
+              {{ pelicula.original_title }}
+            </h6>
+            <p class="card__description">
+              {{ pelicula.release_date }}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <h3>ver gratis</h3>
+
+    <div class="section-container">
+      <h3>Ver Gratis</h3>
+      <div id="row" class="row">
+        <div id="card" class="card" v-for="pelicula in peliculas">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
+            v-bind:alt="pelicula.original_title" alt="">
+          <div class="card__content" @click="detallesPelicula(pelicula)">
+            <h6 class="card__title">
+              {{ pelicula.original_title }}
+            </h6>
+            <p class="card__description">
+              {{ pelicula.release_date }}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <h3>series o tv</h3>
+
+
+    <div class="section-container">
+      <h3>Series o TV</h3>
+      <div id="row" class="row">
+        <div id="card" class="card" v-for="pelicula in peliculas">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
+            v-bind:alt="pelicula.original_title" alt="">
+          <div class="card__content" @click="detallesPelicula(pelicula)">
+            <h6 class="card__title">
+              {{ pelicula.original_title }}
+            </h6>
+            <p class="card__description">
+              {{ pelicula.release_date }}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
+
   </div>
 
 
@@ -106,6 +167,10 @@
 
         const name_app = ref('Mi primer app')
         const peliculas = ref([])
+        // const tendencias = ref([]);
+        // const populares = ref([]);
+        // const verGratis = ref([]);
+        // const seriesTV = ref([]);
 
         return {
           name_app,
@@ -144,10 +209,12 @@
         fetch("https://api.themoviedb.org/3//discover/movie", requestOptions)
           .then((response) => response.json())
           .then((result) => {
-
-
             this.peliculas = result.results
 
+            const randomIndex = Math.floor(Math.random() * this.peliculas.length);
+            const randomMovie = this.peliculas[randomIndex];
+            const banner = document.querySelector('.banner');
+            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomMovie.poster_path})`;
           })
           .catch((error) => console.error(error));
 
