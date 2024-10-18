@@ -93,6 +93,12 @@ José Eduardo Hirales Núñez
             text-align: justify;
         }
 
+        h3 {
+            color: #0298cb;
+            font-family: Bahnschrift Light;
+            margin: 0px 0px 20px 10px;
+        }
+
         h4 {
             font-family: Bahnschrift Light;
             text-align: justify;
@@ -104,13 +110,14 @@ José Eduardo Hirales Núñez
         }
 
         .containerCast {
+            font-family: Bahnschrift Light;
             display: flex;
             flex-direction: row;
             overflow-x: auto;
             padding: 10px 0;
             margin-top: 20px;
             width: 100%;
-            max-width: 600px;
+            max-width: 640px;
             background-color: #2c2c2e;
             border-radius: 8px;
         }
@@ -132,6 +139,49 @@ José Eduardo Hirales Núñez
             font-size: 1rem;
             margin: 0;
             color: #fff;
+        }
+
+        .recommendedMovieContainer {
+            font-family: Bahnschrift Light;
+            background-color: #2c2c2e;
+            border-radius: 8px;
+            padding: 10px 0;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 640px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recommendedMovies {
+            display: flex;
+            overflow-x: auto;
+            padding-top: 5px;
+        }
+
+        .recommendedMovie {
+            flex: 0 0 auto;
+            width: 150px;
+            text-align: center;
+            margin-right: 20px;
+        }
+
+        .recommendedMovie img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .recommendedMovie h2 {
+            font-size: 1rem;
+            margin: 5px 0;
+            color: #fff;
+        }
+
+        .recommendedMovie p {
+            text-align: justify;
+            font-size: 0.9rem;
+            color: #ccc;
         }
     </style>
 </head>
@@ -166,23 +216,35 @@ José Eduardo Hirales Núñez
 
         <div class="containerCast">
             <div class="movieCast" v-for="actor in actors" :key="actor.id">
-                <img :src="'https://image.tmdb.org/t/p/w500' + actor.profile_path" alt="actor.name" v-if="actor.profile_path">
+                <img :src="'https://image.tmdb.org/t/p/w500' + actor.profile_path" alt="actor.name"
+                    v-if="actor.profile_path">
                 <h2>{{ actor.name }}</h2>
             </div>
         </div>
 
+        <div class="recommendedMovieContainer">
+            <h3>Recommended movies</h3>
+            <div class="recommendedMovies">
+                <div class="recommendedMovie" v-for="(movie, index) in recommendedMovies.slice(0, 10)" :key="movie.id">
+                    <img :src="'https://image.tmdb.org/t/p/w500' + movie.backdrop_path" alt="movie.title"
+                        v-if="movie.backdrop_path">
+                    <h2>{{ movie.title }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script>
         const { createApp, ref } = Vue;
-
         createApp({
             data() {
                 return {
                     movieId: null,
                     movie: {},
                     rating: 0,
-                    actors: []
+                    actors: [],
+                    recommendedMovies: []
                 }
             },
             methods: {
@@ -199,7 +261,8 @@ José Eduardo Hirales Núñez
                         })
                         .then(data => {
                             this.movie = data;
-                            this.getCast(movieId); 
+                            this.getCast(movieId);
+                            this.getRecommendedMovies(movieId);
                             this.loadRating();
                         })
                         .catch(error => {
@@ -240,17 +303,26 @@ José Eduardo Hirales Núñez
                         .catch(error => {
                             console.log("Error fetching cast:", error);
                         });
+                },
+                getRecommendedMovies(movieId) {
+                    const url = `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=a6a488b515b4ce93c09d8af3c641eb43`;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.recommendedMovies = data.results;
+                        })
+                        .catch(error => {
+                            console.log("Error fetching recommended movies:", error);
+                        });
                 }
             },
             mounted() {
                 this.movieId = this.getMovieIdFromUrl();
                 if (this.movieId) {
                     this.getDetails(this.movieId);
-                } else {
-                    console.log('No movie ID provided');
                 }
             }
-        }).mount('#main')
+        }).mount('#main');
     </script>
 </body>
 
