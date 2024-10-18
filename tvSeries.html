@@ -11,7 +11,7 @@
 <body>
 
   <div id="main">
-    <div class="card-info-container">
+    <div class="card-info-container"  :style="{ '--background-image': 'url(https://media.themoviedb.org/t/p/w440_and_h660_face/' + img + ')' }">>
       <div class="card">
         <div class="first-content">
           <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + img"
@@ -27,7 +27,7 @@
         <h1 v-model="titular"> {{titular}}</h1>
 
         <div class="keyword-bar">
-          <span class="keyword"> 
+          <span class="keyword">
             adios
           </span>
         </div>
@@ -48,13 +48,10 @@
         </div>
       </div>
     </div>
-    <div class="vertical-bar">
-      <h2>Barra Vertical</h2>
-      <p>Contenido de la barra aquí.</p>
+    <div class="keywords-bar">
+      <h2>Palabras Claves</h2>
+      <button class="keyword-button" v-for="keyword in keywords"> {{keyword.name}} </button>
     </div>
-    <!-- <
-      <!-- Agrega más contenido o enlaces según sea necesario -->
-
 
     <div class="puntaje-container">
       <h2>Califica esta película (0 - 100): {{calificar}}</h2>
@@ -64,7 +61,7 @@
         <button class="borrar-btn" @click="borrarCalificacion">Borrar Calificación</button>
       </div>
     </div>
-    
+
     <div class="reparto-container">
       <h2>Reparto de la serie</h2>
       <br>
@@ -74,7 +71,7 @@
             style="width:100%; height:auto;">
           <h3>{{casting.name}}</h3>
           <p>{{casting.character}}</p>
-          <p>{{casting.total_episode_count}} Episodios</p>
+          <p>{{casting.episode_count}} Episodios</p>
         </div>
       </div>
     </div>
@@ -114,7 +111,7 @@
           <h2>Temporada {{season.season_number}}</h2>
           <div class="info">
             <span class="rating">★ {{(season.vote_average)*10}}%</span>
-            {{season.air_date}} • {{episode_count}} Episodios
+            {{season.air_date}} • {{season.episode_count}} Episodios
           </div>
           <div class="description">
             Temporada 3 de Kuroko no Basket se estrenó el 10 enero 2015
@@ -129,7 +126,7 @@
       <a class="view-seasons">Ver todas las Temporadas</a>
     </div>
     <br>
-    
+
 
   </div>
 
@@ -155,6 +152,7 @@
         const recommendation = ref([])
         const seasons = ref([])
         const lastSeason = ref([]);
+        const keywords = ref([]);
 
         const ratings = ref(JSON.parse(localStorage.getItem('ratings')) || [])
 
@@ -172,7 +170,8 @@
           favorite,
           recommendation,
           seasons,
-          lastSeason
+          lastSeason,
+          keywords,
         }
 
       },
@@ -201,9 +200,7 @@
           fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/rating?session_id=${session}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
-              console.log(result.success)
               if (result.success) {
-                console.log("entre")
               }
             })
             .catch((error) => console.error(error));
@@ -233,7 +230,9 @@
 
           fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/rating?session_id=${session}`, requestOptions)
             .then((response) => response.json())
-            .then((result) => console.log(result))
+            .then((result) => {
+
+            })
             .catch((error) => console.error(error));
           this.calificar = 0;
 
@@ -270,7 +269,9 @@
 
           fetch(`https://api.themoviedb.org/3//account/${idPelicula}/favorite?session_id=${session}`, requestOptions)
             .then((response) => response.json())
-            .then((result) => { console.log(result) })
+            .then((result) => {
+
+            })
             .catch((error) => console.error(error));
 
 
@@ -305,9 +306,7 @@
           .then((result) => {
             this.genres = result.genres
             this.seasons = result.seasons
-            console.log("holiss")
             this.creators = result.created_by
-            console.log(this.seasons)
             this.titular = result.name;
             this.img = result.poster_path;
             this.img2 = result.backdrop_path;
@@ -333,17 +332,18 @@
             if (result.cast) {
               this.cast = result.cast.map(actor => {
                 const characterName = actor.roles.length > 0 ? actor.roles[0].character : "";
+                const characterEpisode = actor.roles.length > 0 ? actor.roles[0].episode_count : "";
+                console.log(characterEpisode)
                 return {
                   id: actor.id,
                   name: actor.name,
                   profile_path: actor.profile_path,
-                  character: characterName
+                  character: characterName,
+                  episode_count: characterEpisode
                 };
               });
             }
 
-            console.log("Cast después de mapear:", this.cast);
-            console.log(this.cast);
           })
           .catch((error) => console.error(error));
         const myHeaders3 = new Headers();
@@ -359,8 +359,6 @@
         fetch(`https://api.themoviedb.org/3/account/${username}/rated/tv?session_id=${session}`, requestOptions3)
           .then((response) => response.json())
           .then((result) => {
-            // console.log(result);
-            console.log("serie")
             const movie = result.results.find(movie => movie.id == idPelicula);
             if (movie) {
               this.calificar = movie.rating * 10;
@@ -406,11 +404,25 @@
         fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/recommendations`, requestOptions5)
           .then((response) => response.json())
           .then((result) => {
-            console.log(result.results)
             this.recommendation = result.results
           })
           .catch((error) => console.error(error));
 
+        const myHeaders6 = new Headers();
+        myHeaders6.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions6 = {
+          method: "GET",
+          headers: myHeaders6,
+          redirect: "follow"
+        };
+
+        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/keywords`, requestOptions6)
+          .then((response) => response.json())
+          .then((result) => {
+            this.keywords = result.results
+          })
+          .catch((error) => console.error(error));
 
       }
     }).mount('#main') 
