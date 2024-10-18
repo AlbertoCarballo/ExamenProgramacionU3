@@ -63,51 +63,53 @@
     <div class="section-container">
       <h3>Tendencias</h3>
       <div id="row" class="row">
-        <div id="card" class="card" v-for="pelicula in peliculas">
-          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
-            v-bind:alt="pelicula.original_title" alt="">
-          <div class="card__content" @click="detallesPelicula(pelicula)">
+        <div id="card" class="card" v-for="trend in trendings">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + trend.poster_path"
+            v-bind:alt="trend.original_title || trend.original_name" alt="" />
+          <div class="card__content" @click="detallesmovie(trend)">
             <h6 class="card__title">
-              {{ pelicula.original_title }}
+              {{ trend.title || trend.name }}
             </h6>
             <p class="card__description">
-              {{ pelicula.release_date }}
+              {{ trend.release_date || trend.first_air_date }}
             </p>
           </div>
         </div>
       </div>
     </div>
 
+
     <div class="section-container">
-      <h3>Popular</h3>
+      <h3>Contenido Popular</h3>
       <div id="row" class="row">
-        <div id="card" class="card" v-for="pelicula in peliculas">
-          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
-            v-bind:alt="pelicula.original_title" alt="">
-          <div class="card__content" @click="detallesPelicula(pelicula)">
+        <div id="card" class="card" v-for="popular in popular">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + (popular.poster_path || '')"
+            v-bind:alt="popular.title || popular.name" alt="">
+          <div class="card__content" @click="detallesmovie(popular)">
             <h6 class="card__title">
-              {{ pelicula.original_title }}
+              {{ popular.title || popular.name }}
             </h6>
             <p class="card__description">
-              {{ pelicula.release_date }}
+              {{ popular.release_date || popular.first_air_date }}
             </p>
           </div>
         </div>
       </div>
     </div>
+    
 
     <div class="section-container">
       <h3>Ver Gratis</h3>
       <div id="row" class="row">
-        <div id="card" class="card" v-for="pelicula in peliculas">
-          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
-            v-bind:alt="pelicula.original_title" alt="">
-          <div class="card__content" @click="detallesPelicula(pelicula)">
+        <div id="card" class="card" v-for="movie in movies">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + movie.poster_path"
+            v-bind:alt="movie.original_title" alt="">
+          <div class="card__content" @click="detallesmovie(movie)">
             <h6 class="card__title">
-              {{ pelicula.original_title }}
+              {{ movie.original_title }}
             </h6>
             <p class="card__description">
-              {{ pelicula.release_date }}
+              {{ movie.release_date }}
             </p>
           </div>
         </div>
@@ -118,15 +120,15 @@
     <div class="section-container">
       <h3>Series o TV</h3>
       <div id="row" class="row">
-        <div id="card" class="card" v-for="pelicula in peliculas">
-          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
-            v-bind:alt="pelicula.original_title" alt="">
-          <div class="card__content" @click="detallesPelicula(pelicula)">
+        <div id="card" class="card" v-for="movie in movies">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + movie.poster_path"
+            v-bind:alt="movie.original_title" alt="">
+          <div class="card__content" @click="detallesmovie(movie)">
             <h6 class="card__title">
-              {{ pelicula.original_title }}
+              {{ movie.original_title }}
             </h6>
             <p class="card__description">
-              {{ pelicula.release_date }}
+              {{ movie.release_date }}
             </p>
           </div>
         </div>
@@ -139,15 +141,15 @@
 
 
   <!-- <div id="main">
-    <div class="card" v-for="pelicula in peliculas">
-      <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + pelicula.poster_path"
-        v-bind:alt="pelicula.original_title" alt="smn">
-      <div class="card__content" @click="detallesPelicula(pelicula)">
-        <p class="card__title">{{ pelicula.original_title }}
+    <div class="card" v-for="movie in movies">
+      <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + movie.poster_path"
+        v-bind:alt="movie.original_title" alt="smn">
+      <div class="card__content" @click="detallesmovie(movie)">
+        <p class="card__title">{{ movie.original_title }}
         </p>
-        <p class="card__description">Date Release: {{ pelicula.release_date }}
+        <p class="card__description">Date Release: {{ movie.release_date }}
           <br>
-          Original Language: ( {{pelicula.original_language}} )
+          Original Language: ( {{movie.original_language}} )
           <br>
           <br>
           Click para ver mas
@@ -166,30 +168,32 @@
       setup() {
 
         const name_app = ref('Mi primer app')
-        const peliculas = ref([])
-        // const tendencias = ref([]);
-        // const populares = ref([]);
-        // const verGratis = ref([]);
-        // const seriesTV = ref([]);
+        const movies = ref([])
+        const trendings = ref([]);
+        const popular = ref([]);
+        const verGratis = ref([]);
+        const seriesTV = ref([]);
 
         return {
           name_app,
-          peliculas
+          movies,
+          trendings,
+          popular
         }
 
       },
       methods: {
-        detallesPelicula(movie) {
+        detallesmovie(movie) {
 
-
+          
           window.location.href = `movie.html?id=${movie.id}`;
         }
-
-
+        
+        
       },
       mounted() {
-
-
+        
+        
         let is_log = localStorage.getItem("is_log");
         let username = localStorage.getItem("username");
 
@@ -206,45 +210,73 @@
           redirect: "follow"
         };
 
+        fetch("https://api.themoviedb.org/3/trending/all/day", requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            this.trendings = result.results;
+
+            const randomIndex = Math.floor(Math.random() * this.trendings.length);
+            const randomTrending = this.trendings[randomIndex];
+            const banner = document.querySelector('.banner');
+            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomTrending.poster_path})`;
+          })
+          .catch((error) => console.error(error));
+
+
         fetch("https://api.themoviedb.org/3//discover/movie", requestOptions)
           .then((response) => response.json())
           .then((result) => {
-            this.peliculas = result.results
+            this.movies = result.results
 
-            const randomIndex = Math.floor(Math.random() * this.peliculas.length);
-            const randomMovie = this.peliculas[randomIndex];
+            const randomIndex = Math.floor(Math.random() * this.movies.length);
+            const randomMovie = this.movies[randomIndex];
             const banner = document.querySelector('.banner');
             banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomMovie.poster_path})`;
           })
           .catch((error) => console.error(error));
 
+        // LO MAS POPULAR ----------------------------------------------------------------
+
+        fetch("https://api.themoviedb.org/3//tv/popular", requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            this.popular = result.results
+
+            const randomIndex = Math.floor(Math.random() * this.popular.length);
+            const randomPopular = this.popular[randomIndex];
+            const banner = document.querySelector('.banner');
+            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomPopular.poster_path})`;
+          })
+          .catch((error) => console.error(error));
+          // LO MAS POPULAR ----------------------------------------------------------------
+
         const sessionId = localStorage.getItem("session");
-        if (!sessionId) {
-          const myHeaders2 = new Headers();
-          myHeaders2.append("Content-Type", "application/json");
-          myHeaders2.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+      if(!sessionId) {
+        const myHeaders2 = new Headers();
+        myHeaders2.append("Content-Type", "application/json");
+        myHeaders2.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
 
-          const tokens = localStorage.getItem("token");
-          const raw2 = JSON.stringify({
-            "request_token": tokens
-          });
+        const tokens = localStorage.getItem("token");
+        const raw2 = JSON.stringify({
+          "request_token": tokens
+        });
 
-          const requestOptions2 = {
-            method: "POST",
-            headers: myHeaders2,
-            body: raw2,
-            redirect: "follow"
-          };
+        const requestOptions2 = {
+          method: "POST",
+          headers: myHeaders2,
+          body: raw2,
+          redirect: "follow"
+        };
 
-          fetch("https://api.themoviedb.org/3/authentication/session/new", requestOptions2)
-            .then((response) => response.json())
-            .then((result) => {
-              console.log(result)
-              localStorage.setItem("session", result.session_id)
-            })
-            .catch((error) => console.error(error));
-        }
+        fetch("https://api.themoviedb.org/3/authentication/session/new", requestOptions2)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result)
+            localStorage.setItem("session", result.session_id)
+          })
+          .catch((error) => console.error(error));
       }
+    }
     }).mount('#main') 
   </script>
 </body>
