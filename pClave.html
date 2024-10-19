@@ -101,7 +101,7 @@
           </label>
         </div>
     
-        <div v-for="media in mediaList" :key="media.id" class="card">
+        <div v-for="media in mediaList" :key="media.id" class="card" @click="redirectTvSeries(media)">
           <img :src="'https://image.tmdb.org/t/p/w500' + media.poster_path" :alt="media.title || media.name">
           <div class="card-content">
             <h3 class="card-title">{{ media.title || media.name }}</h3>
@@ -154,6 +154,21 @@
                 mediaType,
                 mediaList
             };
+        },
+        methods:{
+
+          redirectTvSeries(serie){
+            if(this.mediaType ==  "tv"){
+
+              window.location.href= `tvSeries.html?id=${serie.id}`;
+            }
+            else {
+              window.location.href= `movieDetail.html?id=${serie.id}`;
+
+            } 
+            
+          }
+
         }
     }).mount('#app');
   </script>
