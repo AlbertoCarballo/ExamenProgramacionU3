@@ -11,121 +11,132 @@
 <body>
 
   <div id="main">
-    <div class="card-info-container"  :style="{ '--background-image': 'url(https://media.themoviedb.org/t/p/w440_and_h660_face/' + img + ')' }">>
-      <div class="card">
-        <div class="first-content">
-          <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + img"
-            style="width:100% ; height:100%">
-        </div>
-        <div class="second-content">
-          <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + img2"
-            style="width:100% ; height:100%">
-        </div>
-      </div>
-
-      <div class="info-container">
-        <h1 v-model="titular"> {{titular}}</h1>
-
-        <div class="keyword-bar">
-          <span class="keyword">
-            adios
-          </span>
-        </div>
-
-        <div class="genres" v-for="genre in genres">
-          <span>{{genre.name}}</span>
-        </div>
-        <button class="favorite" @click="addFavorite">
-          <span> {{ favorite }} </span>
-        </button>
-
-        <div class="sinopsis">
-          <span> Sinopsis <br> {{ sinopsis }}</span>
-        </div>
-
-        <div class="director" v-for="creator in creators">
-          <span>{{ creator.name }}: <br> creador </span>
-        </div>
-      </div>
-    </div>
-    <div class="keywords-bar">
-      <h2>Palabras Claves</h2>
-      <button class="keyword-button" v-for="keyword in keywords"> {{keyword.name}} </button>
-    </div>
-
-    <div class="puntaje-container">
-      <h2>Califica esta película (0 - 100): {{calificar}}</h2>
-      <input type="range" v-model.number="calificar" id="rating" min="0" max="100" step="5" class="slider">
-      <div class="puntaje-btn">
-        <button class="calificar-btn" @click="calificarPeli">Calificar</button>
-        <button class="borrar-btn" @click="borrarCalificacion">Borrar Calificación</button>
-      </div>
-    </div>
-
-    <div class="reparto-container">
-      <h2>Reparto de la serie</h2>
-      <br>
-      <div class="reparto">
-        <div class="actor-card" v-for="casting in cast">
-          <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + casting.profile_path"
-            style="width:100%; height:auto;">
-          <h3>{{casting.name}}</h3>
-          <p>{{casting.character}}</p>
-          <p>{{casting.episode_count}} Episodios</p>
-        </div>
-      </div>
-    </div>
-
-    <br>
-
-    <div class="recommendation">
-      <h2>Recomendaciones</h2>
-      <div class="card-recommendation-container">
-        <div class="card-recommendation" v-for="recommendation in recommendation" :key="recommendation.id">
-          <div class="image-container">
-            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path"
-              style="width:100%; height:auto;">
+    <div class="conendor-supremo">
+      <div class="card-info-container"
+        :style="{ '--background-image': 'url(https://media.themoviedb.org/t/p/w440_and_h660_face/' + img + ')' }">>
+        <div class="card">
+          <div class="first-content">
+            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + img"
+              style="width:100% ; height:100%">
           </div>
-          <div class="info-recommendation">
-            <h3>{{ recommendation.name }}</h3>
-            <div class="rating">
-              <span>{{ recommendation.vote_average * 10 }}%</span>
-              <div class="progress-bar">
-                <div class="progress" :style="{ width: (recommendation.vote_average * 10) + '%' }"></div>
+          <div class="second-content">
+            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + img2"
+              style="width:100% ; height:100%">
+          </div>
+        </div>
+
+        <div class="info-container">
+          <h1 v-model="titular"> {{titular}}</h1>
+
+
+          <div class="genres-container">
+            <h3>Generos:</h3>
+            <button class="genres" v-for="genre in genres">
+              {{genre.name}}
+            </button>
+          </div>
+          <br>
+          <button class="favorite" @click="addFavorite">
+            <span> {{ favorite }} </span>
+          </button>
+
+          <br>
+          <br>
+          <div class="watch-trailer" @click="redirectTrailer">
+            <button>
+              Watch Trailer
+            </button>
+          </div>
+          <br>
+          <div class="sinopsis">
+            <span> Sinopsis <br> {{ sinopsis }}</span>
+          </div>
+
+          <div class="director" v-for="creator in creators">
+            <span>{{ creator.name }}: <br> creador </span>
+          </div>
+        </div>
+      </div>
+      <div class="keywords-bar">
+        <h2>Palabras Claves</h2>
+        <button class="keyword-button" v-for="keyword in keywords"> {{keyword.name}} </button>
+      </div>
+
+      <div class="puntaje-container">
+        <h2>Califica esta película (0 - 100): {{calificar}}</h2>
+        <input type="range" v-model.number="calificar" id="rating" min="0" max="100" step="5" class="slider">
+        <div class="puntaje-btn">
+          <button class="calificar-btn" @click="calificarPeli">Calificar</button>
+          <button class="borrar-btn" @click="borrarCalificacion">Borrar Calificación</button>
+        </div>
+      </div>
+
+      <div class="reparto-container">
+        <h2>Reparto de la serie</h2>
+        <br>
+        <div class="reparto">
+          <div class="actor-card" v-for="casting in cast">
+            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + casting.profile_path"
+              style="width:100%; height:auto;">
+            <h3>{{casting.name}}</h3>
+            <p>{{casting.character}}</p>
+            <p>{{casting.episode_count}} Episodios</p>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="recommendation">
+        <h2>Recomendaciones</h2>
+        <div class="card-recommendation-container">
+          <div class="card-recommendation" v-for="recommendation in recommendation" :key="recommendation.id">
+            <div class="image-container">
+              <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path"
+                style="width:100%; height:auto;">
+            </div>
+            <div class="info-recommendation">
+              <h3>{{ recommendation.name }}</h3>
+              <div class="rating">
+                <span>{{ recommendation.vote_average * 10 }}%</span>
+                <div class="progress-bar">
+                  <div class="progress" :style="{ width: (recommendation.vote_average * 10) + '%' }"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <br>
+      <br>
 
-    <div class="season-container">
-      <div class="header">Última temporada</div>
+      <div class="season-container">
+        <div class="header">Última temporada</div>
 
-      <div class="season-card" v-for="season in lastSeason">
-        <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path"
-          style="width: 300px; height:200px;">
+        <div class="season-card" v-for="season in lastSeason">
+          <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path"
+            style="width: 300px; height:200px;">
 
-        <div class="season-card-content">
-          <h2>Temporada {{season.season_number}}</h2>
-          <div class="info">
-            <span class="rating">★ {{(season.vote_average)*10}}%</span>
-            {{season.air_date}} • {{season.episode_count}} Episodios
-          </div>
-          <div class="description">
-            Temporada 3 de Kuroko no Basket se estrenó el 10 enero 2015
-          </div>
-          <div class="episode-info">
-            <span>Many Times Over (3x25, 1 julio 2015)</span>
-            <span class="end-tag">Final de temporada</span>
+          <div class="season-card-content">
+            <h2>Temporada {{season.season_number}}</h2>
+            <div class="info">
+              <span class="rating">★ {{(season.vote_average)*10}}%</span>
+              {{season.air_date}} • {{season.episode_count}} Episodios
+            </div>
+            <div class="description">
+              Temporada 3 de Kuroko no Basket se estrenó el 10 enero 2015
+            </div>
+            <div class="episode-info">
+              <span>Many Times Over (3x25, 1 julio 2015)</span>
+              <span class="end-tag">Final de temporada</span>
+            </div>
           </div>
         </div>
+        <br>
+        <a class="view-seasons">Ver todas las Temporadas</a>
       </div>
       <br>
-      <a class="view-seasons">Ver todas las Temporadas</a>
+
     </div>
-    <br>
 
 
   </div>
@@ -153,6 +164,7 @@
         const seasons = ref([])
         const lastSeason = ref([]);
         const keywords = ref([]);
+        const serieTrailer=ref("");
 
         const ratings = ref(JSON.parse(localStorage.getItem('ratings')) || [])
 
@@ -172,6 +184,7 @@
           seasons,
           lastSeason,
           keywords,
+          serieTrailer
         }
 
       },
@@ -246,6 +259,8 @@
           let username = localStorage.getItem("username");
 
 
+
+
           const myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
           myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
@@ -275,6 +290,9 @@
             .catch((error) => console.error(error));
 
 
+        },
+        redirectTrailer() {
+          window.location.href = `https://www.youtube.com/watch?v=${this.serieTrailer}`;
         }
 
 
@@ -424,6 +442,26 @@
           })
           .catch((error) => console.error(error));
 
+
+        const myHeaders7 = new Headers();
+        myHeaders7.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions7 = {
+          method: "GET",
+          headers: myHeaders7,
+          redirect: "follow"
+        };
+
+        fetch("https://api.themoviedb.org/3//tv/45783/videos?language=en-US", requestOptions7)
+          .then((response) => response.json())
+          .then((result) => {
+            
+            for (let index = 0; index < result.results.length; index++) {
+              this.serieTrailer=result.results[index].key
+              
+            }
+          })
+          .catch((error) => console.error(error));
       }
     }).mount('#main') 
   </script>

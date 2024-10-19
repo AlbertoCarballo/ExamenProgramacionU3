@@ -9,10 +9,25 @@ body {
     height: 100vh;
 }
 
+.contenedor-supremo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
+
 #main {
     display: flex;
     margin-bottom: 20px;
     flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .card-info-container {
@@ -25,12 +40,14 @@ body {
     margin-top: 50px;
     margin-bottom: 20px;
     color: white;
-    width: 58%;
+    width: 100%;
+    max-width: 100%;
     margin-left: 0;
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 8px;
     padding: 20px;
     position: relative;
+    align-items: center;
 }
 
 .card-info-container::before {
@@ -47,7 +64,6 @@ body {
     background-position: center;
     opacity: 0.3;
     z-index: 1;
-
 }
 
 .info-container {
@@ -128,6 +144,10 @@ body {
     margin-right: 20px;
     margin-bottom: 20px;
     z-index: 2;
+    max-width: 100%;
+    /* Se asegura de que no se salga del contenedor */
+    box-sizing: border-box;
+    /* Incluye el padding dentro del ancho total */
 }
 
 .card:hover {
@@ -222,6 +242,7 @@ body {
     margin-top: 20px;
     scroll-behavior: smooth;
     white-space: nowrap;
+    max-width: 100%;
 }
 
 .reparto::-webkit-scrollbar {
@@ -280,6 +301,7 @@ body {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
 }
 
 .card-recommendation-container::-webkit-scrollbar {
@@ -306,96 +328,30 @@ body {
     margin: 50px 0;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
-.header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.season-card {
+.genres-bar {
     display: flex;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px; /* Aumenté el espacio entre los botones */
+    margin: 20px 0; /* Margen superior e inferior */
 }
 
-.season-card img {
-    width: 120px;
-    height: auto;
-    border-radius: 5px;
-}
-
-.season-card-content {
-    margin-left: 20px;
-}
-
-.season-card-content h2 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.rating {
-    background-color: #2e3b4e;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: inline-block;
-}
-
-.info {
-    color: #666;
-    font-size: 14px;
-    margin: 5px 0;
-}
-
-.description {
-    font-size: 16px;
-    margin-top: 10px;
-    color: #333;
-}
-
-.episode-info {
-    margin-top: 15px;
-}
-
-.episode-info span {
-    display: inline-block;
-    margin-right: 10px;
-    font-size: 14px;
-    color: #555;
-}
-
-.episode-info .end-tag {
-    background-color: #2e3b4e;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: inline-block;
-}
-
-.view-seasons {
-    margin-top: 20px;
-    color: #2e3b4e;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.view-seasons:hover {
-    text-decoration: underline;
-}
-
-button.favorite {
-    margin-top: 20px;
-    background-color: #158aff;
-    color: white;
-    padding: 10px;
+.genre-button {
+    background-color: #3399ff;
     border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  
+}
+
+.genre-button:hover {
+    background-color: #158aff;
+    transform: scale(1.05);
 }
