@@ -11,9 +11,6 @@
 </head>
 
 <body>
-
-
-
   <div id="main" class="container content">
     <div class="nav-bar">
       <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
@@ -50,115 +47,104 @@
         </div>
       </nav>
     </div>
+
     <div class="banner">
       <div class="banner-content">
         <h1>¡Bienvenido!</h1>
         <p>Millones de películas, series y gente por descubrir. ¡Explora ya!</p>
-        <form class="d-flex justify-content-center">
-          <input id="input" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-          <button id="btn-banner" class="btn btn-primary" type="submit">Buscar</button>
-        </form>
       </div>
     </div>
+
     <div class="section-container">
       <h3>Tendencias</h3>
-      <div id="row" class="row">
-        <div id="card" class="card" v-for="trend in trendings">
+      <div class="scrollable-row">
+        <div class="card" v-for="trend in trendings">
           <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + trend.poster_path"
             v-bind:alt="trend.original_title || trend.original_name" alt="" />
           <div class="card__content" @click="detallesmovie(trend)">
-            <h6 class="card__title">
-              {{ trend.title || trend.name }}
-            </h6>
-            <p class="card__description">
-              {{ trend.release_date || trend.first_air_date }}
-            </p>
+            <h6 class="card__title">{{ trend.title || trend.name }}</h6>
+            <p class="card__description">{{ trend.release_date || trend.first_air_date }}</p>
           </div>
         </div>
       </div>
     </div>
-
 
     <div class="section-container">
       <h3>Contenido Popular</h3>
-      <div id="row" class="row">
-        <div id="card" class="card" v-for="popular in popular">
-          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + (popular.poster_path || '')"
-            v-bind:alt="popular.title || popular.name" alt="">
-          <div class="card__content" @click="detallesmovie(popular)">
-            <h6 class="card__title">
-              {{ popular.title || popular.name }}
-            </h6>
-            <p class="card__description">
-              {{ popular.release_date || popular.first_air_date }}
-            </p>
+      <div class="btn-container">
+        <button @click="showMovies">Películas</button>
+        <button @click="showTVShows">Series de TV</button>
+      </div>
+      <div v-if="isMoviesSectionVisible">
+        <div class="scrollable-row">
+          <div id="card" class="card" v-for="popular in popularMovies" :key="popular.id">
+            <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + popular.poster_path"
+              v-bind:alt="popular.title || popular.name" alt="">
+            <div class="card__content" @click="detallesmovie(popular)">
+              <h6 class="card__title">
+                {{ popular.title || popular.name }}
+              </h6>
+              <p class="card__description">
+                {{ popular.release_date || popular.first_air_date }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="isTVShowsSectionVisible">
+        <div class="scrollable-row">
+          <div id="card" class="card" v-for="popular in popularTV" :key="popular.id">
+            <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + popular.poster_path"
+              v-bind:alt="popular.title || popular.name" alt="">
+            <div class="card__content" @click="detallesmovie(popular)">
+              <h6 class="card__title">
+                {{ popular.title || popular.name }}
+              </h6>
+              <p class="card__description">
+                {{ popular.release_date || popular.first_air_date }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    
 
     <div class="section-container">
       <h3>Ver Gratis</h3>
-      <div id="row" class="row">
-        <div id="card" class="card" v-for="movie in movies">
-          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + movie.poster_path"
-            v-bind:alt="movie.original_title" alt="">
-          <div class="card__content" @click="detallesmovie(movie)">
+      <div class="scrollable-row">
+        <div id="card" class="card" v-for="free in freeWatch">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + free.poster_path"
+            v-bind:alt="free.original_title" alt="">
+          <div class="card__content" @click="detallesmovie(free)">
             <h6 class="card__title">
-              {{ movie.original_title }}
+              {{ free.original_title }}
             </h6>
             <p class="card__description">
-              {{ movie.release_date }}
+              {{ free.release_date }}
             </p>
           </div>
         </div>
       </div>
     </div>
-
 
     <div class="section-container">
-      <h3>Series o TV</h3>
-      <div id="row" class="row">
-        <div id="card" class="card" v-for="movie in movies">
-          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + movie.poster_path"
-            v-bind:alt="movie.original_title" alt="">
-          <div class="card__content" @click="detallesmovie(movie)">
+      <h3>TV Series</h3>
+      <div class="scrollable-row">
+        <div id="card" class="card" v-for="series in tvSeries">
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + series.poster_path"
+            v-bind:alt="series.original_title" alt="">
+          <div class="card__content" @click="detallesmovie(series)">
             <h6 class="card__title">
-              {{ movie.original_title }}
+              {{ series.original_name }}
             </h6>
             <p class="card__description">
-              {{ movie.release_date }}
+              {{ series.first_air_date }}
             </p>
           </div>
         </div>
       </div>
     </div>
-
   </div>
-
-
-
-
-  <!-- <div id="main">
-    <div class="card" v-for="movie in movies">
-      <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + movie.poster_path"
-        v-bind:alt="movie.original_title" alt="smn">
-      <div class="card__content" @click="detallesmovie(movie)">
-        <p class="card__title">{{ movie.original_title }}
-        </p>
-        <p class="card__description">Date Release: {{ movie.release_date }}
-          <br>
-          Original Language: ( {{movie.original_language}} )
-          <br>
-          <br>
-          Click para ver mas
-        </p>
-      </div>
-    </div>
-
-  </div> -->
-
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script>
@@ -168,32 +154,46 @@
       setup() {
 
         const name_app = ref('Mi primer app')
-        const movies = ref([])
+
         const trendings = ref([]);
-        const popular = ref([]);
-        const verGratis = ref([]);
-        const seriesTV = ref([]);
+        const popularMovies = ref([]);
+        const popularTV = ref([]);
+        const freeWatch = ref([]);
+        const tvSeries = ref([]);
+        const isMoviesSectionVisible = ref(true);
+        const isTVShowsSectionVisible = ref(false);
 
         return {
           name_app,
-          movies,
+
           trendings,
-          popular
+          popularMovies,
+          popularTV,
+          isMoviesSectionVisible,
+          isTVShowsSectionVisible,
+          freeWatch,
+          tvSeries
         }
 
       },
       methods: {
         detallesmovie(movie) {
-
-          
-          window.location.href = `movie.html?id=${movie.id}`;
+          window.location.href = `movieDetail.html?id=${movie.id}`;
+        },
+        showMovies() {
+          this.isMoviesSectionVisible = true;
+          this.isTVShowsSectionVisible = false; // Ocultar la sección de series
+          // console.log(this.isMoviesSectionVisible);
+        },
+        showTVShows() {
+          this.isMoviesSectionVisible = false; // Ocultar la sección de películas
+          this.isTVShowsSectionVisible = true; // Mostrar la sección de series
+          // console.log(this.isTVShowsSectionVisible);
         }
-        
-        
       },
       mounted() {
-        
-        
+
+
         let is_log = localStorage.getItem("is_log");
         let username = localStorage.getItem("username");
 
@@ -201,6 +201,7 @@
           window.location.href = "index.html";
         }
 
+        // TRENDING ----------------------------------------------------------------
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
 
@@ -210,73 +211,149 @@
           redirect: "follow"
         };
 
-        fetch("https://api.themoviedb.org/3/trending/all/day", requestOptions)
+        fetch("https://api.themoviedb.org/3/trending/movie/day?language=es-MX", requestOptions)
           .then((response) => response.json())
           .then((result) => {
             this.trendings = result.results;
+            // console.log(this.trendings);
 
             const randomIndex = Math.floor(Math.random() * this.trendings.length);
-            const randomTrending = this.trendings[randomIndex];
+            const randomImage = this.trendings[randomIndex];
             const banner = document.querySelector('.banner');
-            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomTrending.poster_path})`;
+            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomImage.poster_path})`;
           })
           .catch((error) => console.error(error));
-
-
-        fetch("https://api.themoviedb.org/3//discover/movie", requestOptions)
-          .then((response) => response.json())
-          .then((result) => {
-            this.movies = result.results
-
-            const randomIndex = Math.floor(Math.random() * this.movies.length);
-            const randomMovie = this.movies[randomIndex];
-            const banner = document.querySelector('.banner');
-            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomMovie.poster_path})`;
-          })
-          .catch((error) => console.error(error));
+        // TRENDING ------------------------------------------------------------------------------------------------
 
         // LO MAS POPULAR ----------------------------------------------------------------
 
-        fetch("https://api.themoviedb.org/3//tv/popular", requestOptions)
-          .then((response) => response.json())
-          .then((result) => {
-            this.popular = result.results
-
-            const randomIndex = Math.floor(Math.random() * this.popular.length);
-            const randomPopular = this.popular[randomIndex];
-            const banner = document.querySelector('.banner');
-            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomPopular.poster_path})`;
-          })
-          .catch((error) => console.error(error));
-          // LO MAS POPULAR ----------------------------------------------------------------
-
-        const sessionId = localStorage.getItem("session");
-      if(!sessionId) {
         const myHeaders2 = new Headers();
-        myHeaders2.append("Content-Type", "application/json");
         myHeaders2.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
 
-        const tokens = localStorage.getItem("token");
-        const raw2 = JSON.stringify({
-          "request_token": tokens
-        });
-
         const requestOptions2 = {
-          method: "POST",
+          method: "GET",
           headers: myHeaders2,
-          body: raw2,
           redirect: "follow"
         };
 
-        fetch("https://api.themoviedb.org/3/authentication/session/new", requestOptions2)
+        fetch("https://api.themoviedb.org/3//movie/popular?language=en-US&page=1&region=AE", requestOptions2)
           .then((response) => response.json())
           .then((result) => {
-            console.log(result)
-            localStorage.setItem("session", result.session_id)
+            this.popularMovies = result.results
+            // console.log(this.popularMovies)
+
+            const randomIndex = Math.floor(Math.random() * this.popularMovies.length);
+            const randomImage = this.popularMovies[randomIndex];
+            const banner = document.querySelector('.banner');
+            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomImage.poster_path})`;
           })
           .catch((error) => console.error(error));
+
+
+        const myHeaders3 = new Headers();
+        myHeaders3.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions3 = {
+          method: "GET",
+          headers: myHeaders3,
+          redirect: "follow"
+        };
+
+        fetch("https://api.themoviedb.org/3//tv/popular?language=en-US&page=1", requestOptions3)
+          .then((response) => response.json())
+          .then((result) => {
+            this.popularTV = result.results
+            // console.log(this.popularTV)
+          })
+          .catch((error) => console.error(error));
+        // LO MAS POPULAR ----------------------------------------------------------------
+
+        // FREE WATCH ----------------------------------------------------------------
+        const myHeaders4 = new Headers();
+        myHeaders4.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions4 = {
+          method: "GET",
+          headers: myHeaders4,
+          redirect: "follow"
+        };
+
+        fetch('https://api.themoviedb.org/3/discover/movie?api_key=06f17c2da2049684e4cbbf915bb7fa91&with_watch_monetization_types=free&watch_region=US')
+          .then(response => response.json())
+          .then(result => {
+            console.log(result.results);
+            this.freeWatch = result.results
+            console.log("hola");
+          })
+          .catch((error) => console.error(error));
+        //FREE WATCH ----------------------------------------------------------------
+
+        // TV SHOWS ----------------------------------------------------------------
+        const myHeaders5 = new Headers();
+        myHeaders5.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions5 = {
+          method: "GET",
+          headers: myHeaders5,
+          redirect: "follow"
+        };
+
+        fetch("https://api.themoviedb.org/3//tv/top_rated?language=en-US&page=1", requestOptions5)
+          .then((response) => response.json())
+          .then((result) => {
+            this.tvSeries = result.results;
+            console.log("hola");
+
+            const randomIndex = Math.floor(Math.random() * this.tvSeries.length);
+            const randomImage = this.tvSeries[randomIndex];
+            const banner = document.querySelector('.banner');
+            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${randomImage.poster_path})`;
+
+          })
+          .catch((error) => console.error(error));
+        // TV SHOWS ----------------------------------------------------------------
+
+        const sessionId = localStorage.getItem("session");
+        if (!sessionId) {
+          const myHeaders6 = new Headers();
+          myHeaders6.append("Content-Type", "application/json");
+          myHeaders6.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+          const tokens = localStorage.getItem("token");
+          const raw2 = JSON.stringify({
+            "request_token": tokens
+          });
+
+          const requestOptions6 = {
+            method: "POST",
+            headers: myHeaders6,
+            body: raw2,
+            redirect: "follow"
+          };
+
+          fetch("https://api.themoviedb.org/3/authentication/session/new", requestOptions6)
+            .then((response) => response.json())
+            .then((result) => {
+              console.log(result)
+              localStorage.setItem("session", result.session_id)
+            })
+            .catch((error) => console.error(error));
+
+          const myHeaders7 = new Headers();
+          myHeaders7.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+          const requestOptions7 = {
+            method: "GET",
+            headers: myHeaders7,
+            redirect: "follow"
+          };
+
+          fetch("https://api.themoviedb.org/3//movie/top_rated?language=en-US&page=1&region=AT", requestOptions7)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
+        }
       }
-    }
     }).mount('#main') 
   </script>
 </body>
