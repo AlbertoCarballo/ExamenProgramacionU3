@@ -31,7 +31,7 @@
 
           <div class="genres-container">
             <h3>Generos:</h3>
-            <button class="genres" v-for="genre in genres">
+            <button class="genres" v-for="genre in genres" @click="redirectGenres(genre)">
               {{genre.name}}
             </button>
           </div>
@@ -59,7 +59,8 @@
       </div>
       <div class="keywords-bar">
         <h2>Palabras Claves</h2>
-        <button class="keyword-button" v-for="keyword in keywords"> {{keyword.name}} </button>
+        <button class="keyword-button" v-for="keyword in keywords" @click="redirectKeyword(keyword)"> {{keyword.name}}
+        </button>
       </div>
 
       <div class="puntaje-container">
@@ -75,7 +76,7 @@
         <h2>Reparto de la serie</h2>
         <br>
         <div class="reparto">
-          <div class="actor-card" v-for="casting in cast">
+          <div class="actor-card" v-for="casting in cast" @click="redirectActores(casting)">
             <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + casting.profile_path"
               style="width:100%; height:auto;">
             <h3>{{casting.name}}</h3>
@@ -90,7 +91,8 @@
       <div class="recommendation">
         <h2>Recomendaciones</h2>
         <div class="card-recommendation-container">
-          <div class="card-recommendation" v-for="recommendation in recommendation" :key="recommendation.id">
+          <div class="card-recommendation" v-for="recommendation in recommendation" :key="recommendation.id"
+            @click="redirectTVSeries(recommendation)">
             <div class="image-container">
               <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path"
                 style="width:100%; height:auto;">
@@ -99,9 +101,6 @@
               <h3>{{ recommendation.name }}</h3>
               <div class="rating">
                 <span>{{ recommendation.vote_average * 10 }}%</span>
-                <div class="progress-bar">
-                  <div class="progress" :style="{ width: (recommendation.vote_average * 10) + '%' }"></div>
-                </div>
               </div>
             </div>
           </div>
@@ -123,10 +122,10 @@
               {{season.air_date}} • {{season.episode_count}} Episodios
             </div>
             <div class="description">
-              Temporada 3 de Kuroko no Basket se estrenó el 10 enero 2015
+              Temporada {{season.season_number}} de {{titular}} se estrenó el {{season.air_date}}
             </div>
             <div class="episode-info">
-              <span>Many Times Over (3x25, 1 julio 2015)</span>
+              
               <span class="end-tag">Final de temporada</span>
             </div>
           </div>
@@ -164,7 +163,7 @@
         const seasons = ref([])
         const lastSeason = ref([]);
         const keywords = ref([]);
-        const serieTrailer=ref("");
+        const serieTrailer = ref("");
 
         const ratings = ref(JSON.parse(localStorage.getItem('ratings')) || [])
 
@@ -292,7 +291,21 @@
 
         },
         redirectTrailer() {
-          window.location.href = `https://www.youtube.com/watch?v=${this.serieTrailer}`;
+          window.open(`https://www.youtube.com/watch?v=${this.serieTrailer}`, '_blank');
+        },
+        redirectKeyword(keyword) {
+          window.location.href = `pClave.html?id=${keyword.id}`;
+        },
+        redirectGenres(genre) {
+          window.location.href = `categorias.html?id=${genre.id}`;
+        },
+        redirectTVSeries(recomendation) {
+          console.log("hola")
+          window.location.href = `tvSeries.html?id=${recomendation.id}`;
+
+        },
+        redirectActores(cast){
+          window.location.href = `artitsDetail.html?id=${cast.id}`;
         }
 
 
@@ -452,13 +465,13 @@
           redirect: "follow"
         };
 
-        fetch("https://api.themoviedb.org/3//tv/45783/videos?language=en-US", requestOptions7)
+        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/videos?language=en-US`, requestOptions7)
           .then((response) => response.json())
           .then((result) => {
-            
+
             for (let index = 0; index < result.results.length; index++) {
-              this.serieTrailer=result.results[index].key
-              
+              this.serieTrailer = result.results[index].key
+
             }
           })
           .catch((error) => console.error(error));
