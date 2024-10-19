@@ -9,25 +9,15 @@ body {
     height: 100vh;
 }
 
-
 #main {
     display: flex;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
     flex-direction: column;
 }
 
 .card-info-container {
     flex: 1;
-}
-
-.vertical-bar {
-    width: 58%;
-    background-color: #f0f0f0;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.card-info-container {
+    overflow: hidden;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -37,24 +27,66 @@ body {
     color: white;
     width: 58%;
     margin-left: 0;
-    background-color: rgba(0, 0, 0, 0.705);
+    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 8px;
     padding: 20px;
+    position: relative;
+}
+
+.card-info-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: 1;
+
+}
+
+.info-container {
+    position: relative;
+    z-index: 2;
+}
+
+.info-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.keywords-bar h2 {
+    color: white;
+}
+
+.keyword-button {
+    margin-right: 10px;
 }
 
 .puntaje-container,
 .reparto-container,
 .recommendation {
-    margin-top: 20px; 
+    margin-top: 20px;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.1); 
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
 
 .puntaje-container,
 .reparto-container,
-.recommendation h2{
-color: white;
+.recommendation h2 {
+    color: white;
 }
 
 .puntaje-btn {
@@ -95,6 +127,7 @@ color: white;
     font-weight: 900;
     margin-right: 20px;
     margin-bottom: 20px;
+    z-index: 2;
 }
 
 .card:hover {
@@ -150,6 +183,8 @@ color: white;
     font-weight: bold;
     border-radius: 20px;
     padding: 5px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    /* Sombra de texto */
 }
 
 .sinopsis {
@@ -157,6 +192,9 @@ color: white;
     border-radius: 20px;
     font-size: 1.2rem;
     font-weight: bold;
+    z-index: 2;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    /* Sombra de texto */
 }
 
 .director {
@@ -167,14 +205,14 @@ color: white;
     font-weight: bold;
     border-radius: 20px;
     padding: 5px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    /* Sombra de texto */
 }
 
 .director span {
     display: inline-block;
     margin-right: 20px;
 }
-
-
 
 .reparto {
     display: flex;
@@ -234,8 +272,6 @@ color: white;
 .ver-mas a:hover {
     color: #004499;
 }
-
-
 
 .card-recommendation-container {
     display: flex;
@@ -310,7 +346,6 @@ color: white;
     display: inline-block;
 }
 
-
 .info {
     color: #666;
     font-size: 14px;
@@ -363,4 +398,4 @@ button.favorite {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-} 
+}
