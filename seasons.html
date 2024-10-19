@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./seasons.css">
+</head>
+
+<body>
+
+    <div id="main">
+        <div class="contenedor-supremo">
+            <div class="season-container" v-for="season in seasons" @click="redirectEpisode(season)">
+                <div class="image">
+                    <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path"
+                        v-bind:alt="seasons.original_title">
+                </div>
+                <div class="info">
+                    <h2>{{season.name}}</h2>
+                    <p>{{ season.air_date }} • {{season.episode_count}} Episodios</p>
+                    <p class="release-date">Temporada {{season.season_number}} de {{title}} se estrenó el
+                        {{season.air_date}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            setup() {
+
+                const name_app = ref('Mi primer app')
+                const seasons = ref([]);
+                const title = ref("")
+
+                return {
+                    name_app,
+                    seasons,
+                    title
+                }
+
+            },
+            methods: {
+                redirectEpisode(season) {
+                    const urlParams = new URLSearchParams(window.location.search)
+                    const idPelicula = urlParams.get('id')
+                    window.location.href = `episodes.html?id=${idPelicula}&season=${season.season_number}`;
+
+                }
+
+
+            },
+            mounted() {
+                const urlParams = new URLSearchParams(window.location.search)
+                const idPelicula = urlParams.get('id')
+                let is_log = localStorage.getItem("is_log");
+                let username = localStorage.getItem("username");
+                const session = localStorage.getItem("session");
+
+                if (is_log == null && username == null) {
+                    window.location.href = "index.html";
+                }
+
+                const myHeaders = new Headers();
+                myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3//tv/${idPelicula}`, requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        console.log(result.seasons)
+                        this.seasons = result.seasons
+                        this.title = result.name
+                    })
+
+
+
+
+            }
+        }).mount('#main') 
+    </script>
+</body>
+
+</html>
