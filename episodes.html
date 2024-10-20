@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./seasons.css">
+    <link rel="stylesheet" href="./episodes.css">
 </head>
 
 <body>
@@ -25,6 +25,8 @@
                         Sinopsis:
                         <br>
                         {{episode.overview}}
+                        <br>
+                        <button @click="redirectGuestStars(episode)">Ver Estrellas Invitadas </button>
                     </span>
                 </div>
             </div>
@@ -51,8 +53,29 @@
 
             },
             methods: {
-                redirectEpisode() {
+                redirectGuestStars(episode) {
+                    const urlParams = new URLSearchParams(window.location.search)
+                    const idPelicula = urlParams.get('id')
 
+                    const myHeaders = new Headers();
+                    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                    const requestOptions = {
+                        method: "GET",
+                        headers: myHeaders,
+                        redirect: "follow"
+                    };
+
+                    fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/season/${episode.season_number}/episode/${episode.episode_number}?language=en-US`, requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => {
+                            if (!result.guest_stars.length==0) {
+                                window.location.href = `estrellasInvitadas.html?id=${idPelicula}&season=${episode.season_number}&episode=${episode.episode_number}`;
+                            } else {
+                                alert("no hay estrellas invitadas")
+                            }
+                        })
+                        .catch((error) => console.error(error));
 
                 }
 
@@ -83,7 +106,7 @@
                 fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/season/${seasonNumber}?language=en-US`, requestOptions)
                     .then((response) => response.json())
                     .then((result) => {
-                        this.episodes=result.episodes
+                        this.episodes = result.episodes
                         console.log(this.episodes)
                     })
                     .catch((error) => console.error(error));

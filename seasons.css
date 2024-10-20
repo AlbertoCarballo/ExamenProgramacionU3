@@ -22,6 +22,7 @@ body {
     /* Cambiado a 100% para ocupar todo el ancho */
     max-width: 600px;
     /* Mantener el ancho máximo */
+    cursor: pointer !important;
 }
 
 .image {

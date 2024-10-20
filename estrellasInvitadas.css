@@ -22,11 +22,9 @@ body {
     /* Cambiado a 100% para ocupar todo el ancho */
     max-width: 600px;
     /* Mantener el ancho máximo */
-}
-
-.info button{
     cursor: pointer;
 }
+
 .image {
     margin-right: 20px;
 }
