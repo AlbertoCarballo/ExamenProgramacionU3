@@ -25,22 +25,8 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  Dropdown link
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
+              <li>
+                <button>asdasd</button>
               </li>
             </ul>
           </div>
@@ -59,8 +45,14 @@
       <h3>Tendencias</h3>
       <div class="scrollable-row">
         <div class="card" v-for="trend in trendings">
-          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + trend.poster_path"
-            v-bind:alt="trend.original_title || trend.original_name" alt="" />
+          <div class="img-if" v-if="(trend.poster_path || trend.backdrop_path) != null">
+            <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + (trend.poster_path || trend.backdrop_path)"
+              v-bind:alt="trend.original_title || trend.original_name" alt="" />
+          </div>
+          <div class="else-img" v-else>
+            <img id="card-no-img" v-bind:src="'https://i.ibb.co/R9s5MsR/card-no-img.png'" alt="" />
+          </div>
+
           <div class="card__content" @click="detallesmovie(trend)">
             <h6 class="card__title">{{ trend.title || trend.name }}</h6>
             <p class="card__description">{{ trend.release_date || trend.first_air_date }}</p>
@@ -96,7 +88,7 @@
           <div id="card" class="card" v-for="popular in popularTV" :key="popular.id">
             <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + popular.poster_path"
               v-bind:alt="popular.title || popular.name" alt="">
-            <div class="card__content" @click="detallesmovie(popular)">
+            <div class="card__content" @click="detallestv(popular)">
               <h6 class="card__title">
                 {{ popular.title || popular.name }}
               </h6>
@@ -133,7 +125,7 @@
         <div id="card" class="card" v-for="series in tvSeries">
           <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + series.poster_path"
             v-bind:alt="series.original_title" alt="">
-          <div class="card__content" @click="detallesmovie(series)">
+          <div class="card__content" @click="detallestv(series)">
             <h6 class="card__title">
               {{ series.original_name }}
             </h6>
@@ -180,6 +172,10 @@
         detallesmovie(movie) {
           window.location.href = `movieDetail.html?id=${movie.id}`;
         },
+        detallestv(tv) {
+          window.location.href = `tvSeries.html?id=${tv.id}`;
+        }
+        ,
         showMovies() {
           this.isMoviesSectionVisible = true;
           this.isTVShowsSectionVisible = false; // Ocultar la sección de series
@@ -211,7 +207,7 @@
           redirect: "follow"
         };
 
-        fetch("https://api.themoviedb.org/3/trending/movie/day?language=es-MX", requestOptions)
+        fetch("https://api.themoviedb.org/3/trending/movie/week?language=es-MX", requestOptions)
           .then((response) => response.json())
           .then((result) => {
             this.trendings = result.results;
@@ -278,7 +274,7 @@
           redirect: "follow"
         };
 
-        fetch('https://api.themoviedb.org/3/discover/movie?api_key=06f17c2da2049684e4cbbf915bb7fa91&with_watch_monetization_types=free&watch_region=US')
+        fetch('https://api.themoviedb.org/3/discover/movie?api_key=06f17c2da2049684e4cbbf915bb7fa91&with_watch_monetization_types=free&watch_region=MX')
           .then(response => response.json())
           .then(result => {
             console.log(result.results);
