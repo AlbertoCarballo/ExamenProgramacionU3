@@ -1,14 +1,15 @@
 body {
   background-color: #000 !important;
+  padding-top: 70px; 
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px auto;
-    max-width: 1200px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 1200px;
+}
   
   .media-toggle {
     display: flex;
@@ -190,3 +191,32 @@ body {
 .titulo{
   color: #fff;
 }
+
+.nav-bar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  background-color: #7A1CAC !important; 
+  padding: 10px 20px;
+}
+
+.pClave-info {
+  width: 100%; 
+  text-align: center;
+  background: linear-gradient(90deg, #7A1CAC, #2E073F); 
+  color: white;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: 2px ; 
+}
+
+.pClave-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
