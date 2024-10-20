@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./seasons.css">
+</head>
+
+<body>
+
+    <div id="main">
+        <div class="contenedor-supremo">
+            <div class="season-container" v-for="episode in episodes">
+                <div class="image">
+                    <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + episode.still_path"
+                        v-bind:alt="episode.name">
+                </div>
+                <div class="info">
+                    <h2>{{episode.name}}</h2>
+                    <p>{{ episode.air_date }} • Episodio {{episode.episode_number}} </p>
+                    <p class="release-date">Temporada {{episode.season_number}} </p>
+                    <span>
+                        Sinopsis:
+                        <br>
+                        {{episode.overview}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            setup() {
+
+                const name_app = ref('Mi primer app')
+                const episodes = ref([]);
+                const title = ref("")
+
+                return {
+                    name_app,
+                    episodes,
+                    title
+                }
+
+            },
+            methods: {
+                redirectEpisode() {
+
+
+                }
+
+
+            },
+            mounted() {
+                const urlParams = new URLSearchParams(window.location.search)
+                const idPelicula = urlParams.get('id')
+                const urlParamers = new URLSearchParams(window.location.search)
+                const seasonNumber = urlParamers.get('season')
+                let is_log = localStorage.getItem("is_log");
+                let username = localStorage.getItem("username");
+                const session = localStorage.getItem("session");
+
+                if (is_log == null && username == null) {
+                    window.location.href = "index.html";
+                }
+
+                const myHeaders = new Headers();
+                myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/season/${seasonNumber}?language=en-US`, requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        this.episodes=result.episodes
+                        console.log(this.episodes)
+                    })
+                    .catch((error) => console.error(error));
+
+
+
+            }
+        }).mount('#main') 
+    </script>
+</body>
+
+</html>
