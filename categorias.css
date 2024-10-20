@@ -1,3 +1,7 @@
+body {
+  background-color: #000 !important;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -65,9 +69,9 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    background-color: white;
+    background: #2E073F !important;
     border-radius: 10px;
-    border: 2px solid #ddd; 
+    border: 2px ; 
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
     padding: 20px;
@@ -94,6 +98,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    color: #fff;
   }
   
   .card-title {
@@ -120,7 +125,7 @@
   }
 
   .dropdown-button {
-    background-color: #007bff;
+    background-color: #7A1CAC; 
     color: white;
     padding: 10px 20px;
     font-size: 1.2rem;
@@ -131,7 +136,8 @@
   }
 
   .dropdown-button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(144deg, #7A1CAC 50%, #2E073F);
+    transform: scale(1.05); 
   }
 
   .dropdown-button .arrow {
@@ -181,4 +187,6 @@
     display: block;
   }
 
-  
+.titulo{
+  color: #fff;
+}
