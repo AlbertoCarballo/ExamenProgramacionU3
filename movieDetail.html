@@ -8,224 +8,9 @@ José Eduardo Hirales Núñez
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <style type="text/css">
-        #main {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #fff;
-            background-color: #1c1c1e;
-            padding: 20px;
-        }
-
-        .movieDetails {
-            width: 100%;
-            /*background-color: #0299cb42;*/
-            display: flex;
-            justify-content: flex-start;
-
-        }
-
-        .movieBackgroundImg {
-            width: 50%;
-            height: auto;
-            max-height: 580px;
-            overflow: hidden;
-            position: relative;
-          
-        }
-
-        .movieBackgroundImg img {
-            margin-top: 5px;
-            width: 98%;
-            height: 98%;
-            object-fit: cover;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-    
-        }
-
-        .card {
-            color: white !important;
-            background-color: #2c2c2e;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px #444b6e8a;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            width: auto;
-            max-width: 50%;
-            margin: 10px 0;
-            height: 580px;
-        }
-
-        .card img {
-            width: 300px;
-            height: auto;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-right: 20px;
-        }
-
-        .card-content {
-            width: auto;
-            flex: 1;
-        }
-
-        .card-content h2 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-
-        .stars {
-            display: flex;
-            cursor: pointer;
-        }
-
-        .star {
-            font-size: 2rem;
-            color: rgb(128, 128, 128);
-        }
-
-        .star.filled {
-            color: rgba(255, 242, 0, 0.936);
-        }
-
-        button {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #6b6b6b;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            margin: 0 5px;
-        }
-
-        button:hover {
-            background-color: #bbbbbb;
-        }
-
-        .button-container {
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-
-        h1 {
-            color: #0298cb;
-            font-family: Bahnschrift Light;
-        }
-
-        .h1Container {
-            height: 100px;
-        }
-
-        h3 {
-            color: #0298cb;
-            font-family: Bahnschrift Light;
-            margin: 0px 0px 20px 10px;
-        }
-
-        h4 {
-            font-family: Bahnschrift Light;
-            text-align: justify;
-        }
-
-        p {
-            font-family: Bahnschrift Light;
-            text-align: justify;
-        }
-
-        .pContainer {
-            height: 75px;
-        }
-
-        .containerCast {
-            font-family: Bahnschrift Light;
-            display: flex;
-            flex-direction: row;
-            overflow-x: auto;
-            padding: 10px 0;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 640px;
-            background-color: #2c2c2e;
-            border-radius: 8px;
-        }
-
-        .movieCast {
-            flex: 0 0 auto;
-            width: 120px;
-            text-align: center;
-            margin-right: 10px;
-        }
-
-        .movieCast img {
-            width: 100%;
-            border-radius: 5px;
-            margin-bottom: 5px;
-        }
-
-        .movieCast h2 {
-            font-size: 1rem;
-            margin: 0;
-            color: #fff;
-        }
-
-        .recommendedMovieContainer {
-            font-family: Bahnschrift Light;
-            background-color: #2c2c2e;
-            border-radius: 8px;
-            padding: 10px 0;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 640px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .recommendedMovies {
-            display: flex;
-            overflow-x: auto;
-            padding-top: 5px;
-        }
-
-        .recommendedMovie {
-            flex: 0 0 auto;
-            width: 150px;
-            text-align: center;
-            margin-right: 20px;
-        }
-
-        .recommendedMovie img {
-            width: 100%;
-            border-radius: 5px;
-            margin-bottom: 5px;
-        }
-
-        .recommendedMovie h2 {
-            font-size: 1rem;
-            margin: 5px 0;
-            color: #fff;
-        }
-
-        .recommendedMovie p {
-            text-align: justify;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-    </style>
+    <link rel="stylesheet" href="movieDetail.css">
 </head>
 
 <body>
@@ -242,7 +27,7 @@ José Eduardo Hirales Núñez
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                <a class="nav-link active" aria-current="page" @click="redirectHome">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Features</a>
@@ -262,6 +47,9 @@ José Eduardo Hirales Núñez
                                 </ul>
                             </li>
                         </ul>
+                        <div class="logout-button" style="margin-left: auto;">
+                            <button @click="logout">Log Out</button>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -275,33 +63,56 @@ José Eduardo Hirales Núñez
                         <div class="h1Container">
                             <h1>{{ movie.title }}</h1>
                         </div>
-                        <h4>Release Date: </br> {{ movie.release_date }}</h4>
-                        <div class="pContainer">
-                            <p>{{ movie.overview.slice(0, 200) }}{{ movie.overview.length > 200 ? '...' : '' }}</p>
+                        <div class="genres">
+                            <button class="genre" v-for="genre in genres">
+                                {{genre.name}}
+                            </button>
                         </div>
-                        <h4>Original Language: {{ movie.original_language }}</h4>
-                        <h4>Popularity: {{ movie.popularity }}</h4>
-                        <h4>Vote Average: {{ movie.vote_average }}</h4>
-                        <h4>Vote Count: {{ movie.vote_count }}</h4>
+                        <br>
+                        <div class="button-adds">
+                            <button class="favorite" @click="addFavorite">
+                                <span> {{ favorite }} </span>
+                            </button>
+                            <button class="watch-trailer" @click="redirectTrailer">
+                                <span>Ver Trailer</span>
+                            </button>
 
-                        <div class="rateContent">
-                            <h4>Rate this movie:</h4>
-                            <div class="stars">
-                                <span v-for="star in 10" :key="star" @click="setRating(star)"
-                                    :class="['star', { 'filled': star <= rating }]">
-                                    ★
-                                </span>
-                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="info-container">
+                            <h4>Release Date: </br> {{ movie.release_date }}</h4>
+                            <p>{{ movie.overview.slice(0, 200) }}{{ movie.overview.length > 200 ? '...' : '' }}</p>
+                            <h4>Original Language: {{ movie.original_language }}</h4>
+                            <h4>Popularity: {{ movie.popularity }}</h4>
+                            <h4>Vote Average: {{ movie.vote_average }}</h4>
+                            <h4>Vote Count: {{ movie.vote_count }}</h4>
+                        </div>
+
+                        <div class="puntaje-container">
+                            <h2>Califica esta película (0 - 100): {{calificar}}</h2>
+                            <input type="range" v-model.number="calificar" id="rating" min="0" max="100" step="5"
+                                class="slider">
                             <div class="button-container">
-                                <button @click="saveRating()">Save</button>
+                                <button @click="setRating">Save</button>
                                 <button @click="deleteRating()">Delete</button>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="keyword">
+                            <h3> palabras claves</h3>
+                            <br>
+                            <div class="keyword">
+
+                                <button class="button-keyword" v-for="keyword in keywords">{{keyword.name}}</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="movieBackgroundImg">
+                <!-- <div class="movieBackgroundImg">
                     <img :src="'https://image.tmdb.org/t/p/w1280' + movie.backdrop_path" alt="movie backdrop">
-                </div>
+                </div> -->
             </div>
 
             <div class="containerCast">
@@ -325,20 +136,75 @@ José Eduardo Hirales Núñez
             </div>
         </div>
     </div>
-    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
     <script>
         const { createApp, ref } = Vue;
         createApp({
             data() {
+                const favoriteFlag = ref(0);
+                const favorite = ref("");
+                const genres = ref([]);
+                const keywords = ref([]);
+                const calificar = ref(50)
+                const movieTrailer = ("")
                 return {
                     movieId: null,
                     movie: {},
                     rating: 0,
                     actors: [],
-                    recommendedMovies: []
+                    recommendedMovies: [],
+                    favorite,
+                    favoriteFlag,
+                    genres,
+                    keywords,
+                    calificar,
+                    movieTrailer
                 }
             },
             methods: {
+
+                redirectHome() {
+                    window.location.href = `movies.html`;
+                },
+                redirectTrailer() {
+                    window.open(`https://www.youtube.com/watch?v=${this.movieTrailer}`, '_blank');
+                },
+                addFavorite() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const idPelicula = urlParams.get('id');
+                    const session = localStorage.getItem("session");
+                    let username = localStorage.getItem("username");
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+                    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+                    this.favoriteFlag = this.favoriteFlag === 1 ? 0 : 1;
+                    this.favorite = this.favoriteFlag === 1 ? "Remove from Favorite" : "Add to Favorite";
+
+
+
+                    const raw = JSON.stringify({
+                        "media_type": "movie",
+                        "media_id": idPelicula,
+                        "favorite": this.favoriteFlag === 1 ? true : false
+                    });
+
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: "follow"
+                    };
+
+                    fetch(`https://api.themoviedb.org/3//account/${idPelicula}/favorite?session_id=${session}`, requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => {
+
+                        })
+                        .catch((error) => console.error(error));
+
+
+                },
                 getDetails(movieId) {
                     console.log(`Fetching details for movie ID: ${movieId}`);
                     const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=a6a488b515b4ce93c09d8af3c641eb43`;
@@ -352,6 +218,8 @@ José Eduardo Hirales Núñez
                         })
                         .then(data => {
                             this.movie = data;
+                            console.log(data)
+                            this.genres = data.genres
                             this.getCast(movieId);
                             this.getRecommendedMovies(movieId);
                             this.loadRating();
@@ -375,14 +243,62 @@ José Eduardo Hirales Núñez
                     }
                 },
                 deleteRating() {
-                    if (this.movieId) {
-                        localStorage.removeItem(`rating_${this.movieId}`);
-                        this.rating = 0;
-                        console.log('Rating deleted');
-                    }
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const idPelicula = urlParams.get('id');
+                    const session = localStorage.getItem("session");
+
+                    const myHeaders = new Headers();
+                    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                    const requestOptions = {
+                        method: "DELETE",
+                        headers: myHeaders,
+                        redirect: "follow"
+                    };
+
+                    fetch(`https://api.themoviedb.org/3//movie/${idPelicula}/rating?session_id=${session}`, requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => {
+
+                        })
+                        .catch((error) => console.error(error));
+                    this.calificar = 0;
+
+                    alert("tu onda ha sido destruida.");
                 },
-                setRating(star) {
-                    this.rating = star;
+                setRating() {
+                    const urlParams = new URLSearchParams(window.location.search)
+                    const idPelicula = urlParams.get('id')
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+                    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                    const raw = JSON.stringify({
+                        "value": (this.calificar / 10)
+                    });
+
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: "follow"
+                    };
+
+                    const session = localStorage.getItem("session");
+                    fetch(`https://api.themoviedb.org/3//movie/${idPelicula}/rating?session_id=${session}`, requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => {
+                            console.log(result.success)
+                        })
+                        .catch((error) => console.error(error));
+                    if (this.calificar >= 80) {
+                        alert("oye que buena onda te traes")
+                    } else if (this.calificar >= 60 && this.calificar <= 79) {
+                        alert("oye te cargas una onda media")
+                    } else {
+                        alert("oye te cargas una mala onda ")
+                    }
+
                 },
                 getCast(movieId) {
                     const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=a6a488b515b4ce93c09d8af3c641eb43`;
@@ -408,11 +324,108 @@ José Eduardo Hirales Núñez
                 },
                 viewRecommendedMovie(movieId) {
                     window.location.href = `?id=${movieId}`;
+                }, logout() {
+                    localStorage.clear();
+                    window.location.href = "index.html";
                 }
             },
             mounted() {
+                const urlParams = new URLSearchParams(window.location.search)
+                const idPelicula = urlParams.get('id')
+                let is_log = localStorage.getItem("is_log");
+                let username = localStorage.getItem("username");
+                const session = localStorage.getItem("session");
+
+
+                if (is_log == null && username == null) {
+                    window.location.href = "index.html";
+                }
+                const myHeaders = new Headers();
+                myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3//account/${username}/favorite/movies?session_id=${session}`, requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        const serie = result.results.find(serie => serie.id == idPelicula);
+                        if (serie) {
+                            this.favoriteFlag = 1
+                            this.favorite = "Remove from Favorite"
+                        } else {
+                            this.favoriteFlag = 0
+                            this.favorite = "Add to Favorite"
+                        }
+                    })
+                    .catch((error) => console.error(error));
+
+
+                const myHeaders2 = new Headers();
+                myHeaders2.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions2 = {
+                    method: "GET",
+                    headers: myHeaders2,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3//movie/${idPelicula}/keywords`, requestOptions2)
+                    .then((response) => response.json())
+                    .then((result) => {
+
+                        this.keywords = result.keywords
+                        console.log(this.keywords)
+                    })
+                    .catch((error) => console.error(error));
+
+                const myHeaders3 = new Headers();
+                myHeaders3.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions3 = {
+                    method: "GET",
+                    headers: myHeaders3,
+                    redirect: "follow"
+                };
+
+
+                fetch(`https://api.themoviedb.org/3/account/${username}/rated/movies?session_id=${session}`, requestOptions3)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        const movie = result.results.find(movie => movie.id == idPelicula);
+                        if (movie) {
+                            this.calificar = movie.rating * 10;
+                        } else {
+                            this.calificar = 0;
+                        }
+
+                    })
+                    .catch((error) => console.error(error));
+
+
+                const myHeaders4 = new Headers();
+                myHeaders4.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions4 = {
+                    method: "GET",
+                    headers: myHeaders4,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3//movie/${idPelicula}/videos?language=en-US`, requestOptions4)
+                    .then((response) => response.json())
+                    .then((result) => {
+
+                        this.movieTrailer = result.results[0].key
+                    })
+                    .catch((error) => console.error(error));
+
                 this.movieId = this.getMovieIdFromUrl();
                 if (this.movieId) {
+                    console.log(this.movie)
                     this.getDetails(this.movieId);
                 }
             }
