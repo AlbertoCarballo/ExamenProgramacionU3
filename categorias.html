@@ -1,10 +1,9 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Películas y Series por Categoría</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
       .container {
         display: flex;
@@ -19,16 +18,56 @@
         justify-content: center;
         margin-bottom: 20px;
       }
-      
-      .media-toggle label {
-        margin: 0 10px;
+
+      .custom-radio {
+        display: flex;
+        align-items: center;
+        margin: 0 20px;
         font-size: 1.2rem;
+        cursor: pointer;
+        position: relative;
       }
-      
-      .media-toggle input[type="radio"] {
-        margin-right: 5px;
+
+      .custom-radio input[type="radio"] {
+        display: none;
       }
-      
+
+      .radio-button {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #999;
+        border-radius: 50%;
+        margin-right: 10px;
+        position: relative;
+        transition: border-color 0.3s ease;
+      }
+
+      .radio-button::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        background-color: #000;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.3s ease;
+      }
+
+      .custom-radio input[type="radio"]:checked + .radio-button {
+        border-color: #000;
+      }
+
+      .custom-radio input[type="radio"]:checked + .radio-button::before {
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      .custom-radio:hover .radio-button {
+        border-color: #333;
+        transition: border-color 0.2s ease;
+      }
+
       .card {
         display: flex;
         flex-direction: row;
@@ -80,30 +119,101 @@
         font-size: 1rem;
         line-height: 1.5;
       }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+
+      .dropdown-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .dropdown-button:hover {
+        background-color: #0056b3;
+      }
+
+      .dropdown-button .arrow {
+        margin-left: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 3px;
+        transform: rotate(45deg);
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: white;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        width: 100%;
+        border-radius: 5px;
+        transition: opacity 0.3s ease;
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .dropdown-menu li {
+        list-style: none;
+        padding: 10px;
+        cursor: pointer;
+        color: #333;
+        transition: background-color 0.3s ease;
+      }
+
+      .dropdown-menu li:hover {
+        background-color: #f1f1f1;
+      }
+
+      .dropdown.open .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-menu {
+        display: none;
+      }
+
+      .dropdown.open .dropdown-menu {
+        display: block;
+      }
+
       
-    </style>
-      
+  </style>
 </head>
 <body>
-  <div id="app">
-    <div class="container">
-      <div class="media-toggle">
-        <label>
-          <input type="radio" v-model="mediaType" value="movie">
-          Películas
-        </label>
-        <label>
-          <input type="radio" v-model="mediaType" value="tv">
-          Series
-        </label>
-      </div>
+  <div id="app" class="container">
+    <h1>Listado por Categoria</h1>
   
-      <div v-for="media in mediaList" :key="media.id" class="card" @click="redirectTvSeries(media)">
-        <img :src="'https://image.tmdb.org/t/p/w500' + media.poster_path" :alt="media.title || media.name">
-        <div class="card-content">
-          <h3 class="card-title">{{ media.title || media.name }}</h3>
-          <p class="card-date">{{ new Date(media.release_date || media.first_air_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) }}</p>
-          <p class="card-overview">{{ media.overview }}</p>
+    <div class="dropdown" :class="{ 'open': isOpen }">
+      <button @click="toggleDropdown" class="dropdown-button">
+        {{ mediaType === 'movie' ? 'Películas' : 'Series' }}
+        <span class="arrow"></span>
+      </button>
+      <ul class="dropdown-menu" v-if="isOpen">
+        <li @click="changeMediaType('movie')">Películas</li>
+        <li @click="changeMediaType('tv')">Series</li>
+      </ul>
+    </div>
+
+      <div :class="['radio-container', { show: showOptions }]" class="radio-container">
+        <div v-for="media in mediaList" :key="media.id" class="card" @click="redirectTvSeries(media)">
+          <img :src="'https://image.tmdb.org/t/p/w500' + media.poster_path" :alt="media.title || media.name">
+          <div class="card-content">
+            <h3 class="card-title">{{ media.title || media.name }}</h3>
+            <p class="card-date">{{ new Date(media.release_date || media.first_air_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) }}</p>
+            <p class="card-overview">{{ media.overview }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -117,7 +227,9 @@
       setup() {
         const mediaType = ref("movie");
         const mediaList = ref([]);
-        const categoryId = ref("35"); /*localStorage.getItem("selectedCategoryId") */
+        const showOptions = ref(false); 
+        const categoryId = ref("35");
+        const isOpen = ref(false);
         const apiKey = '06f17c2da2049684e4cbbf915bb7fa91';
         const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw';
 
@@ -137,31 +249,41 @@
           .catch(error => console.error("Error al obtener medios:", error));
         };
 
-        
+        watch(mediaType, () => {
+          fetchMedia();
+          showOptions.value = true; 
+        });
+
         onMounted(fetchMedia);
         watch(mediaType, fetchMedia);
-
+  
+        const toggleDropdown = () => {
+          isOpen.value = !isOpen.value;
+        };
+  
+        const changeMediaType = (type) => {
+          mediaType.value = type;
+          isOpen.value = false; 
+        };
+  
         return {
           mediaType,
           mediaList,
-          fetchMedia
+          isOpen,
+          toggleDropdown,
+          changeMediaType
         };
       },
       
-      methods:{
-
+      
+      methods: {
         redirectTvSeries(serie){
           if(this.mediaType ==  "tv"){
-
-            window.location.href= `tvSeries.html?id=${serie.id}`;
-          }
-          else {
-            window.location.href= `movieDetail.html?id=${serie.id}`;
-
+            window.location.href = `tvSeries.html?id=${serie.id}`;
+          } else {
+            window.location.href = `movieDetail.html?id=${serie.id}`;
           } 
-          
         }
-
       }
       
     }).mount('#app');
