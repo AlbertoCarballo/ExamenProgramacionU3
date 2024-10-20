@@ -42,6 +42,7 @@
         width: 100%;
         max-width: 900px;
         transition: transform 0.3s ease, border 0.3s ease;
+        cursor: pointer;
       }
       
       .card:hover {
@@ -122,8 +123,8 @@
             const mediaType = ref("movie");
             const mediaList = ref([]);
             const keywordId = ref("210024"); //localStorage.getItem("selectedKeywordId")
-            const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
-            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
+            const apiKey = '06f17c2da2049684e4cbbf915bb7fa91';
+            const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw';
 
             const fetchMedia = () => {
                 if (!keywordId.value) {
@@ -131,7 +132,7 @@
                     return;
                 }
 
-                const url = `https://api.themoviedb.org/3/discover/${mediaType.value}?api_key=${apiKey}&language=es-ES&with_keywords=${keywordId.value}`;
+                const url = `https://api.themoviedb.org/3/discover/${mediaType.value}?api_key=${apiKey}&language=es-ES&with_keywords=${keywordId.value}&sort_by=popularity.desc`;
 
                 fetch(url, {
                     method: "GET",
