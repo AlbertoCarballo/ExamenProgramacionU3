@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.contenedor-supremo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* Cambiado a columna */
+    align-items: center;
+    /* Centrar horizontalmente */
+}
+
+.season-container {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 20px 0;
+    /* Ajuste el espaciado vertical */
+    width: 100%;
+    /* Cambiado a 100% para ocupar todo el ancho */
+    max-width: 600px;
+    /* Mantener el ancho máximo */
+    cursor: pointer !important;
+}
+
+.image {
+    margin-right: 20px;
+}
+
+.image img {
+    width: 150px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.info {
+    line-height: 1.6;
+}
+
+.info h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.info .release-date {
+    font-weight: bold;
+}
+
+.reparto {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 10px;
+    margin-top: 20px;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.reparto::-webkit-scrollbar {
+    height: 8px;
+}
+
+.reparto::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+
+.reparto-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 80%;
+    color: rgb(0, 0, 0);
+
+}
+
+
+
+.knownFor {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    overflow: hidden;
+    color: black;
+}
+
+.knownFor span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+}
