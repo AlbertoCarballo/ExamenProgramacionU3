@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="artistDetail.css">
+</head>
+
+<body>
+
+    <div id="main">
+        <div class="contenedor-supremo">
+            <div class="season-container" v-if="artists.length > 0" v-for="artist in artists" :key="artist.id">
+                <div class="image">
+                    <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + artist.profile_path"
+                        v-bind:alt="artist.name">
+                </div>
+                <div class="info">
+                    <h2>{{artist.name}}</h2>
+                    <p v-if="!expanded">
+                        {{ truncatedBiography(artist.biography) }}
+                        <a @click.prevent="expanded = true">Ver más</a>
+                    </p>
+                    <p v-else>
+                        {{ artist.biography }}
+                        <a @click.prevent="expanded = false">Ver menos</a>
+                    </p>
+                </div>
+            </div>
+            <div class="reparto-container">
+                <h2>Reparto de la serie</h2>
+                <br>
+                <div class="reparto">
+                    <div class="actor-card" v-for="otherFilms in knownFor" >
+                        <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + otherFilms.poster_path" style="width:250px; height:50%;">
+                        <div class="knownFor">
+                            <span>{{otherFilms.name}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            setup() {
+                const name_app = ref('Mi primer app');
+                const artists = ref([]);
+                const knownFor=ref([])
+                const title = ref("");
+                const expanded = ref(false);
+
+                return {
+                    name_app,
+                    artists,
+                    title,
+                    expanded,
+                    knownFor
+                }
+
+            },
+            methods: {
+                truncatedBiography(biography) {
+                    if (!biography) return "No biography available.";
+                    return biography.length > 200 ? biography.substring(0, 200) + '...' : biography;
+                },
+                toggleExpanded() {
+                    this.expanded = !this.expanded;
+                }
+            },
+            mounted() {
+                const urlParams = new URLSearchParams(window.location.search)
+                const idPelicula = urlParams.get('id')
+                let is_log = localStorage.getItem("is_log");
+                let username = localStorage.getItem("username");
+                const session = localStorage.getItem("session");
+
+                if (is_log == null && username == null) {
+                    window.location.href = "index.html";
+                }
+                const myHeaders = new Headers();
+                myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3/person/${idPelicula}?language=en-US`, requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        this.artists = [result];
+                        this.title = result.profile_path;
+                        console.log(this.artists);
+                    })
+                    .catch((error) => console.error(error));
+
+                const myHeaders2 = new Headers();
+                myHeaders2.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions2 = {
+                    method: "GET",
+                    headers: myHeaders2,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3//person/${idPelicula}/tv_credits?language=en-US`, requestOptions2)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        console.log(result.cast)
+                        this.knownFor=result.cast
+                    })
+                    .catch((error) => console.error(error));
+            }
+        }).mount('#main') 
+    </script>
+</body>
+
+</html>

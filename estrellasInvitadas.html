@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./estrellasInvitadas.css">
+</head>
+
+<body>
+
+    <div id="main">
+        <div class="contenedor-supremo">
+            <div class="season-container" v-for="guestStar in guestStars" @click="redirectActores(guestStar)">
+                <div class="image">
+                    <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + guestStar.profile_path"
+                        v-bind:alt="guestStar.name">
+                </div>
+                <div class="info">
+                    <h2>{{guestStar.name}}</h2>
+                    <p class="release-date"></p>
+                    <span>
+                        Personaje Interpretado: {{guestStar.character}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            setup() {
+
+                const name_app = ref('Mi primer app')
+                const guestStars = ref([]);
+                const title = ref("")
+
+                return {
+                    name_app,
+                    guestStars,
+                    title
+                }
+
+            },
+            methods: {
+                redirectActores(cast) {
+                    window.location.href = `artitsDetail.html?id=${cast.id}`;
+                }
+
+
+            },
+            mounted() {
+                const urlParams = new URLSearchParams(window.location.search)
+                const idPelicula = urlParams.get('id')
+                const seasonNumber = urlParams.get('season')
+                const episodeNumber = urlParams.get("episode")
+                console.log(seasonNumber)
+                let is_log = localStorage.getItem("is_log");
+                let username = localStorage.getItem("username");
+                const session = localStorage.getItem("session");
+
+                if (is_log == null && username == null) {
+                    window.location.href = "index.html";
+                }
+
+                const myHeaders = new Headers();
+                myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/season/${seasonNumber}/episode/${episodeNumber}?language=en-US`, requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (!result.guestStars) {
+                            this.guestStars = result.guest_stars
+                        } else {
+                            alert("no hay estrellas invitadas")
+                        }
+                    })
+                    .catch((error) => console.error(error));
+
+
+
+            }
+        }).mount('#main') 
+    </script>
+</body>
+
+</html>

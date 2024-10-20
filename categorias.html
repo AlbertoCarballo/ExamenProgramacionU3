@@ -1,108 +1,35 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Películas y Series por Categoría</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 20px auto;
-        max-width: 1200px;
-      }
-      
-      .media-toggle {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-      
-      .media-toggle label {
-        margin: 0 10px;
-        font-size: 1.2rem;
-      }
-      
-      .media-toggle input[type="radio"] {
-        margin-right: 5px;
-      }
-      
-      .card {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        background-color: white;
-        border-radius: 10px;
-        border: 2px solid #ddd; 
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        margin-bottom: 20px;
-        padding: 20px;
-        width: 100%;
-        max-width: 900px;
-        transition: transform 0.3s ease, border 0.3s ease;
-      }
-      
-      .card:hover {
-        transform: translateY(-10px);
-        border: 2px solid #000; 
-      }
-      
-      .card img {
-        border-radius: 8px;
-        width: 150px;
-        height: 225px;
-        object-fit: cover;
-        margin-right: 20px;
-      }
-      
-      .card-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-      
-      .card-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-      
-      .card-date {
-        color: gray;
-        font-size: 0.9rem;
-        margin-bottom: 15px;
-      }
-      
-      .card-overview {
-        font-size: 1rem;
-        line-height: 1.5;
-      }
-      
-    </style>
-      
+    <link rel="stylesheet" href="categorias.css">
+
 </head>
 <body>
-  <div id="app">
-    <div class="container">
-      <div class="media-toggle">
-        <label>
-          <input type="radio" v-model="mediaType" value="movie">
-          Películas
-        </label>
-        <label>
-          <input type="radio" v-model="mediaType" value="tv">
-          Series
-        </label>
-      </div>
+  <div id="app" class="container">
+    <h1 class="titulo">Listado por Categoria</h1>
   
-      <div v-for="media in mediaList" :key="media.id" class="card">
-        <img :src="'https://image.tmdb.org/t/p/w500' + media.poster_path" :alt="media.title || media.name">
-        <div class="card-content">
-          <h3 class="card-title">{{ media.title || media.name }}</h3>
-          <p class="card-date">{{ new Date(media.release_date || media.first_air_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) }}</p>
-          <p class="card-overview">{{ media.overview }}</p>
+    <div class="dropdown" :class="{ 'open': isOpen }">
+      <button @click="toggleDropdown" class="dropdown-button">
+        {{ mediaType === 'movie' ? 'Películas' : 'Series' }}
+        <span class="arrow"></span>
+      </button>
+      <ul class="dropdown-menu" v-if="isOpen">
+        <li @click="changeMediaType('movie')">Películas</li>
+        <li @click="changeMediaType('tv')">Series</li>
+      </ul>
+    </div>
+
+      <div :class="['radio-container', { show: showOptions }]" class="radio-container">
+        <div v-for="media in mediaList" :key="media.id" class="card" @click="redirectTvSeries(media)">
+          <img :src="'https://image.tmdb.org/t/p/w500' + media.poster_path" :alt="media.title || media.name">
+          <div class="card-content">
+            <h3 class="card-title">{{ media.title || media.name }}</h3>
+            <p class="card-date">{{ new Date(media.release_date || media.first_air_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) }}</p>
+            <p class="card-overview">{{ media.overview }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -114,14 +41,18 @@
 
     createApp({
       setup() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const idPelicula = urlParams.get('id');
         const mediaType = ref("movie");
         const mediaList = ref([]);
-        const categoryId = ref("35"); /*localStorage.getItem("selectedCategoryId") */
-        const apiKey = 'e567a54dd8a202d30c0f386980ed59aa';
-        const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTY3YTU0ZGQ4YTIwMmQzMGMwZjM4Njk4MGVkNTlhYSIsIm5iZiI6MTcyODQ5OTUzNy45NTkwMjMsInN1YiI6IjY3MDYyMzMwN2UzY2VlN2QzZjljYmU2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WC1Uvzg2D2mD-gVcxaHeaWeYyb_lJN76S97C5bG1Lgk';
+        const showOptions = ref(false); 
+        const categoryId = ref(`${idPelicula}`);
+        const isOpen = ref(false);
+        const apiKey = '06f17c2da2049684e4cbbf915bb7fa91';
+        const apiToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw';
 
         const fetchMedia = () => {
-          const url = `https://api.themoviedb.org/3/discover/${mediaType.value}?api_key=${apiKey}&language=es-ES&with_genres=${categoryId.value}`;
+          const url = `https://api.themoviedb.org/3/discover/${mediaType.value}?api_key=${apiKey}&language=es-ES&with_genres=${categoryId.value}&sort_by=popularity.desc`;
           fetch(url, {
             method: "GET",
             headers: {
@@ -136,15 +67,43 @@
           .catch(error => console.error("Error al obtener medios:", error));
         };
 
+        watch(mediaType, () => {
+          fetchMedia();
+          showOptions.value = true; 
+        });
+
         onMounted(fetchMedia);
         watch(mediaType, fetchMedia);
-
+  
+        const toggleDropdown = () => {
+          isOpen.value = !isOpen.value;
+        };
+  
+        const changeMediaType = (type) => {
+          mediaType.value = type;
+          isOpen.value = false; 
+        };
+  
         return {
           mediaType,
           mediaList,
-          fetchMedia
+          isOpen,
+          toggleDropdown,
+          changeMediaType
         };
+      },
+      
+      
+      methods: {
+        redirectTvSeries(serie){
+          if(this.mediaType ==  "tv"){
+            window.location.href = `tvSeries.html?id=${serie.id}`;
+          } else {
+            window.location.href = `movieDetail.html?id=${serie.id}`;
+          } 
+        }
       }
+      
     }).mount('#app');
   </script>
 </body>
