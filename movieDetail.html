@@ -50,7 +50,7 @@ José Eduardo Hirales Núñez
                             <h1>{{ movie.title }}</h1>
                         </div>
                         <div class="genres">
-                            <button class="genre" v-for="genre in genres" >
+                            <button class="genre" v-for="genre in genres" @click="redirectGenres(genre)">
                                 {{genre.name}}
                             </button>
                         </div>
@@ -146,7 +146,7 @@ José Eduardo Hirales Núñez
             methods: {
 
                 redirectHome() {
-                    window.location.href = `movies.html`;
+                    window.location.href = `home.html`;
                 },
                 redirectTrailer() {
                     window.open(`https://www.youtube.com/watch?v=${this.movieTrailer}`, '_blank');
@@ -158,6 +158,9 @@ José Eduardo Hirales Núñez
                 },
                 redirectHome() {
                     window.location.href = `home.html`;
+                },
+                redirectGenres(genre) {
+                    window.location.href = `categorias.html?id=${genre.id}`;
                 },
                 logout() {
                     localStorage.clear();
