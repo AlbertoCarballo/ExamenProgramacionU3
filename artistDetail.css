@@ -1,77 +1,132 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    color: #fff;
+    background-color: #000 !important;
 }
+
+.nav-bar {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000; 
+  }
+
+  .navbar {
+    background-color: #7A1CAC !important;
+  }
+
+  .content {
+    margin-top: 60px; 
+  }
 
 .contenedor-supremo {
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* Cambiado a columna */
     align-items: center;
-    /* Centrar horizontalmente */
+}
+
+.artist-detail {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    margin-top: 10px;
+    background-color: #2E073F;
+    border-radius: 12px;
 }
 
 .season-container {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
-    padding: 20px 0;
-    /* Ajuste el espaciado vertical */
-    width: 100%;
-    /* Cambiado a 100% para ocupar todo el ancho */
-    max-width: 600px;
-    /* Mantener el ancho máximo */
-    cursor: pointer !important;
+    flex: 0 0 auto;
+    width: 300px;
+    border-radius: 12px;
+    background: #2E073F !important;
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 75px;
+}
+
+.pointer{
+    cursor: pointer;
 }
 
 .image {
-    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+    /* Mueve la imagen más a la izquierda */
 }
 
 .image img {
-    width: 150px;
+    width: 250px;
     height: auto;
     border-radius: 5px;
+    margin-bottom: 10px;
+    margin-top: 15px;
 }
 
-.info {
-    line-height: 1.6;
+.info1 {
+    margin-bottom:10px;
+    margin-top: 10px;
+}
+
+.name {
+    text-align: center;
 }
 
 .info h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.info h3 {
+    margin: 0;
+    font-size: 20px;
     font-weight: bold;
 }
 
 .info p {
     margin: 5px 0;
-    color: #666;
+    color: #fff;
+    text-align: justify;
 }
 
 .info .release-date {
     font-weight: bold;
 }
 
-.reparto {
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
-    padding: 10px;
+.info .redes {
+    background-color: #000;
+}
+
+.bio {
     margin-top: 20px;
-    scroll-behavior: smooth;
-    white-space: nowrap;
-    max-width: 100%;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 80%;
+    color: white;
+    height: auto !important;
+    /* Altura específica del contenedor */
+    overflow: hidden;
+    /* Ocultar el contenido que desborda */
 }
 
-.reparto::-webkit-scrollbar {
-    height: 8px;
+.bio h2 {
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
-.reparto::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 10px;
+.bio p {
+    font-size: 20px;
+    justify-content: justify;
+    text-align: justify;
 }
 
 
@@ -81,23 +136,206 @@ body {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     width: 80%;
-    color: rgb(0, 0, 0);
-
+    color: white;
+    height: 400px;
+    /* Altura específica del contenedor */
+    overflow: hidden;
+    /* Ocultar el contenido que desborda */
 }
 
-
-
-.knownFor {
+.scrollable-row {
     display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .scrollable-row::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .scrollable-row::-webkit-scrollbar-thumb {
+    background-color: #7A1CAC;
+    border-radius: 10px;
+  }
+
+  .actor-card img {
+    width: 200px;
+    border-radius: 10px;
+  }
+
+/* .filmografia-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 80%;
+    color: rgb(0, 0, 0);
+} */
+
+
+
+.redes {
+    display: inline-flex;
+    list-style: none;
+    height: 100%;
     width: 100%;
+    padding: 10px 0;
+    /* Ajustado el padding para no afectar el texto */
     justify-content: center;
-    overflow: hidden;
-    color: black;
+    margin-top: 20px;
+    /* Añadir un margen superior para separarlas del contenido */
 }
 
-.knownFor span {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+.redes .icon {
+    position: relative;
+    background: #fff;
+    border-radius: 50%;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    background-color: transparent;
+}
+
+.redes .tooltip {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    background: #fff;
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.redes .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background: #fff;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.redes .icon:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.redes .icon:hover span,
+.redes .icon:hover .tooltip {
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.redes .facebook:hover,
+.redes .facebook:hover .tooltip,
+.redes .facebook:hover .tooltip::before {
+    background: #1877F2;
+    color: #fff;
+}
+
+.redes .twitter:hover,
+.redes .twitter:hover .tooltip,
+.redes .twitter:hover .tooltip::before {
+    background: #1DA1F2;
+    color: #fff;
+}
+
+.redes .instagram:hover,
+.redes .instagram:hover .tooltip,
+.redes .instagram:hover .tooltip::before {
+    background: #E4405F;
+    color: #fff;
+}
+
+.redes .linkedin:hover,
+.redes .linkedin:hover .tooltip,
+.redes .linkedin:hover .tooltip::before {
+    background: #2b7cbe;
+    color: #fff;
+}
+
+.redes .pinterest:hover,
+.redes .pinterest:hover .tooltip,
+.redes .pinterest:hover .tooltip::before {
+    background: #bd0230;
+    color: #fff;
+}
+
+.redes .telegram:hover,
+.redes .telegram:hover .tooltip,
+.redes .telegram:hover .tooltip::before {
+    background: #46c2f3;
+    color: #fff;
+}
+
+.filmografia-container {
     max-width: 100%;
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.film-card {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    flex: 0 0 auto;
+    width: auto;
+    border-radius: 12px;
+    background: #2E073F !important;
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.film-card img {
+    object-fit: cover;
+    width: 150px;
+    border-radius: 6px;
+}
+
+.film-info {
+    padding: 10px;
+}
+
+.film-info h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.film-info p {
+    font-size: 20px;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

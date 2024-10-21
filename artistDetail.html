@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="artistDetail.css">
 </head>
 
@@ -12,39 +14,120 @@
 
     <div id="main">
         <div class="contenedor-supremo">
-            <div class="season-container" v-if="artists.length > 0" v-for="artist in artists" :key="artist.id">
-                <div class="image">
-                    <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + artist.profile_path"
-                        v-bind:alt="artist.name">
+            <div class="nav-bar">
+                <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">Navbar</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" @click="redirectHome">Home</a>
+                                </li>
+                            </ul>
+                            <div class="logout-button">
+                                <button @click="logout">Log Out</button>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="artist-detail">
+                <div class="season-container" v-if="artists.length > 0" v-for="artist in artists" :key="artist.id">
+                    <div class="image">
+                        <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + artist.profile_path"
+                            v-bind:alt="artist.name" alt="">
+                    </div>
+                    <div class="info1">
+                        <h2 class="name">{{artist.name}}</h2>
+                    </div>
+                    <div class="info">
+                        <h2>Personal Information:</h2>
+                        <h3>Knowing for:</h3>
+                        <p>{{artist.known_for_department}}</p>
+                        <h3>Credits knows:</h3>
+                        <p>{{credits}}</p>
+                        <h3>Sex:</h3>
+                        <p v-if="artist.gender == 2">Male</p>
+                        <p v-if="artist.gender == 1">Female</p>
+                        <h3>BirthDay</h3>
+                        <p>{{ formatDate(artist.birthday) }}</p>
+                        <h3 v-if="artist.deathday!= null">Deathday</h3>
+                        <p v-if="artist.deathday!= null"> {{artist.deathday}}</p>
+                        <h3>Place of Birth</h3>
+                        <p>{{artist.place_of_birth}}</p>
+                        
+                    </div>
+                    <ul class="redes">
+                        <li v-if=" facebook !=null" class="icon facebook" @click="redirectionFacebook">
+                            <span class="tooltip">Facebook</span>
+                            <span><i class="fab fa-facebook-f"></i></span>
+                        </li>
+                        <li v-if=" twitter !=null" class="icon twitter" @click="redirectionTwitter">
+                            <span class="tooltip">Twitter</span>
+                            <span><i class="fab fa-twitter"></i></span>
+                        </li>
+                        <li v-if="instagram !=null" class="icon instagram" @click="redirectionInstagram">
+                            <span class="tooltip">Instagram</span>
+                            <span><i class="fab fa-instagram"></i></span>
+                        </li>
+                    </ul>
                 </div>
-                <div class="info">
-                    <h2>{{artist.name}}</h2>
+                <div class="bio" v-if="artists.length > 0" v-for="artist in artists" :key="artist.id">
+                    <h2>Biography</h2>
                     <p v-if="!expanded">
                         {{ truncatedBiography(artist.biography) }}
-                        <a @click.prevent="expanded = true">Ver más</a>
+                        <a class="pointer" @click.prevent="expanded = true">Ver más</a>
                     </p>
                     <p v-else>
                         {{ artist.biography }}
-                        <a @click.prevent="expanded = false">Ver menos</a>
+                        <a class="pointer" @click.prevent="expanded = false">Ver menos</a>
                     </p>
                 </div>
+
+
             </div>
             <div class="reparto-container">
-                <h2>Reparto de la serie</h2>
+                <h2>Otras Obras</h2>
                 <br>
-                <div class="reparto">
-                    <div class="actor-card" v-for="otherFilms in knownFor" >
-                        <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + otherFilms.poster_path" style="width:250px; height:50%;">
+                <div class="scrollable-row">
+                    <div class="actor-card" v-for="otherFilms in knownFor" @click="redirection(otherFilms)">
+                        <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + otherFilms.poster_path"
+                            alt="">
                         <div class="knownFor">
-                            <span>{{otherFilms.name}}</span>
+                            <!-- <span>{{otherFilms.name || otherFilms.title }}</span> -->
                         </div>
                     </div>
                 </div>
             </div>
+            <br>
+            <div class="filmografia-container">
+                <h2>Filmografia Entera</h2>
+                <br>
+                <div class="film-card" v-for="film in filmography" @click="redirection(film)">
+                    <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + film.poster_path" alt="">
+                    <div class="film-info">
+                        <h2>{{film.name || film.title}}</h2>
+                        <p v-if="film.episode_count">Episodios: {{film.episode_count}} como:
+                            {{film.character}}</p>
+                        <p v-else> como: {{film.character}}</p>
+                        <p>{{film.first_air_date || film.release_date}}</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
 
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+        integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
+        crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         const { createApp, ref } = Vue
@@ -53,7 +136,13 @@
             setup() {
                 const name_app = ref('Mi primer app');
                 const artists = ref([]);
-                const knownFor=ref([])
+                const knownFor = ref([])
+                const filmography = ref([])
+                const socialMedia = ref([]);
+                const credits = ref([]);
+                const facebook = ref("");
+                const instagram = ref("");
+                const twitter = ref("");
                 const title = ref("");
                 const expanded = ref(false);
 
@@ -62,17 +151,52 @@
                     artists,
                     title,
                     expanded,
-                    knownFor
+                    knownFor,
+                    filmography,
+                    socialMedia,
+                    facebook,
+                    instagram,
+                    twitter,
+                    credits
                 }
 
             },
             methods: {
                 truncatedBiography(biography) {
                     if (!biography) return "No biography available.";
-                    return biography.length > 200 ? biography.substring(0, 200) + '...' : biography;
+                    return biography.length > 200 ? biography.substring(0, 1000) + '...' : biography;
                 },
                 toggleExpanded() {
                     this.expanded = !this.expanded;
+                },
+                redirectionInstagram() {
+                    window.open(`https://www.instagram.com/${this.instagram}`, '_blank');
+                },
+                redirectionFacebook() {
+                    window.open(`https://www.facebook.com/${this.facebook}`, '_blank');
+                },
+                redirectionTwitter() {
+                    window.open(`https://x.com/${this.twitter}`, '_blank');
+                },
+                formatDate(dateString) {
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('es-ES', options).replace(/de /g, ' del ');
+                },
+                redirection(film) {
+                    console.log(film.media_type)
+                    if (film.media_type == "tv") {
+                        window.location.href = `tvSeries.html?id=${film.id}`;
+                    } else {
+                        window.location.href = `movieDetail.html?id=${film.id}`;
+                    }
+                },
+                redirectHome() {
+                    window.location.href = `home.html`;
+                },
+                logout() {
+                    localStorage.clear();
+                    window.location.href = "index.html";
                 }
             },
             mounted() {
@@ -99,7 +223,6 @@
                     .then((result) => {
                         this.artists = [result];
                         this.title = result.profile_path;
-                        console.log(this.artists);
                     })
                     .catch((error) => console.error(error));
 
@@ -112,11 +235,42 @@
                     redirect: "follow"
                 };
 
-                fetch(`https://api.themoviedb.org/3//person/${idPelicula}/tv_credits?language=en-US`, requestOptions2)
+                fetch(`https://api.themoviedb.org/3/person/${idPelicula}/combined_credits?language=en-US`, requestOptions2)
                     .then((response) => response.json())
                     .then((result) => {
-                        console.log(result.cast)
-                        this.knownFor=result.cast
+                        this.credits = result.cast.length
+
+                        this.knownFor = result.cast;
+
+                        this.filmography = [...result.cast].sort((a, b) => {
+                            const dateA = a.first_air_date || a.release_date;
+                            const dateB = b.first_air_date || b.release_date;
+
+                            if (!dateA) return -1;
+                            if (!dateB) return 1;
+
+                            return new Date(dateA) - new Date(dateB);
+                        });
+
+                    })
+                    .catch((error) => console.error(error));
+
+
+                const myHeaders3 = new Headers();
+                myHeaders3.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+                const requestOptions3 = {
+                    method: "GET",
+                    headers: myHeaders3,
+                    redirect: "follow"
+                };
+
+                fetch(`https://api.themoviedb.org/3//person/${idPelicula}/external_ids`, requestOptions3)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        this.facebook = result.facebook_id
+                        this.instagram = result.instagram_id
+                        this.twitter = result.twitter_id
                     })
                     .catch((error) => console.error(error));
             }
