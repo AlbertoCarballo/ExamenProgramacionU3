@@ -195,6 +195,7 @@ button:hover {
 }
 
 .slider {
+    background-color: aliceblue !important;
     width: 100%;
     margin: 10px 0;
 }
@@ -277,6 +278,7 @@ button:hover {
     padding: 10px;
     overflow: hidden;
     position: relative;
+    cursor: pointer;
 }
 
 .actor-card img {
