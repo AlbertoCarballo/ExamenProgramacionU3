@@ -73,8 +73,8 @@
             methods: {
                 redirectEpisode(season) {
                     const urlParams = new URLSearchParams(window.location.search)
-                    const idPelicula = urlParams.get('id')
-                    window.location.href = `episodes.html?id=${idPelicula}&season=${season.season_number}`;
+                    const idSerie = urlParams.get('id')
+                    window.location.href = `episodes.html?id=${idSerie}&season=${season.season_number}`;
 
                 },
                 redirectHome() {
@@ -89,7 +89,7 @@
             },
             mounted() {
                 const urlParams = new URLSearchParams(window.location.search)
-                const idPelicula = urlParams.get('id')
+                const idSerie = urlParams.get('id')
                 let is_log = localStorage.getItem("is_log");
                 let username = localStorage.getItem("username");
                 const session = localStorage.getItem("session");
@@ -107,7 +107,7 @@
                     redirect: "follow"
                 };
 
-                fetch(`https://api.themoviedb.org/3//tv/${idPelicula}`, requestOptions)
+                fetch(`https://api.themoviedb.org/3//tv/${idSerie}`, requestOptions)
                     .then((response) => response.json())
                     .then((result) => {
                         console.log(result.seasons)

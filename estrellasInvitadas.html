@@ -104,7 +104,7 @@
             },
             mounted() {
                 const urlParams = new URLSearchParams(window.location.search)
-                const idPelicula = urlParams.get('id')
+                const idEstrella = urlParams.get('id')
                 const seasonNumber = urlParams.get('season')
                 const episodeNumber = urlParams.get("episode")
                 console.log(seasonNumber)
@@ -125,7 +125,7 @@
                     redirect: "follow"
                 };
 
-                fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/season/${seasonNumber}/episode/${episodeNumber}?language=en-US`, requestOptions)
+                fetch(`https://api.themoviedb.org/3//tv/${idEstrella}/season/${seasonNumber}/episode/${episodeNumber}?language=en-US`, requestOptions)
                     .then((response) => response.json())
                     .then((result) => {
                         if (!result.guestStars) {

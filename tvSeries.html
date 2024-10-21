@@ -79,15 +79,18 @@
           <div class="director" v-for="creator in creators">
             <span>{{ creator.name }}: <br> creador </span>
           </div>
+          <br>
+          <div class="keywords-bar">
+            <h2>Palabras Claves</h2>
+            <div class="keyword">
+              <button class="keyword-button" v-for="keyword in keywords" @click="redirectKeyword(keyword)">
+                {{keyword.name}}
+              </button>
+            </div>
+          </div>
+
         </div>
-      </div>
-      <div class="keywords-bar">
-        <h2>Palabras Claves</h2>
-        <div class="keyword">
-          <button class="keyword-button" v-for="keyword in keywords" @click="redirectKeyword(keyword)">
-            {{keyword.name}}
-          </button>
-        </div>
+
       </div>
 
       <div class="puntaje-container">
@@ -215,7 +218,7 @@
       methods: {
         calificarPeli() {
           const urlParams = new URLSearchParams(window.location.search)
-          const idPelicula = urlParams.get('id')
+          const idSerie = urlParams.get('id')
           const myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
           myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
@@ -232,7 +235,7 @@
           };
 
           const session = localStorage.getItem("session");
-          fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/rating?session_id=${session}`, requestOptions)
+          fetch(`https://api.themoviedb.org/3//tv/${idSerie}/rating?session_id=${session}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
               if (result.success) {
@@ -251,7 +254,7 @@
         borrarCalificacion() {
 
           const urlParams = new URLSearchParams(window.location.search);
-          const idPelicula = urlParams.get('id');
+          const idSerie = urlParams.get('id');
           const session = localStorage.getItem("session");
 
           const myHeaders = new Headers();
@@ -263,7 +266,7 @@
             redirect: "follow"
           };
 
-          fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/rating?session_id=${session}`, requestOptions)
+          fetch(`https://api.themoviedb.org/3//tv/${idSerie}/rating?session_id=${session}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
 
@@ -276,7 +279,7 @@
 
         addFavorite() {
           const urlParams = new URLSearchParams(window.location.search);
-          const idPelicula = urlParams.get('id');
+          const idSerie = urlParams.get('id');
           const session = localStorage.getItem("session");
           let username = localStorage.getItem("username");
           const myHeaders = new Headers();
@@ -289,7 +292,7 @@
 
           const raw = JSON.stringify({
             "media_type": "tv",
-            "media_id": idPelicula,
+            "media_id": idSerie,
             "favorite": this.favoriteFlag === 1 ? true : false
           });
 
@@ -300,7 +303,7 @@
             redirect: "follow"
           };
 
-          fetch(`https://api.themoviedb.org/3//account/${idPelicula}/favorite?session_id=${session}`, requestOptions)
+          fetch(`https://api.themoviedb.org/3//account/${idSerie}/favorite?session_id=${session}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
 
@@ -328,8 +331,8 @@
         },
         redirectSeasons(seasons) {
           const urlParams = new URLSearchParams(window.location.search)
-          const idPelicula = urlParams.get('id')
-          window.location.href = `seasons.html?id=${idPelicula}`;
+          const idSerie = urlParams.get('id')
+          window.location.href = `seasons.html?id=${idSerie}`;
         },
         redirectHome() {
           window.location.href = `home.html`;
@@ -343,7 +346,7 @@
       },
       mounted() {
         const urlParams = new URLSearchParams(window.location.search)
-        const idPelicula = urlParams.get('id')
+        const idSerie = urlParams.get('id')
         let is_log = localStorage.getItem("is_log");
         let username = localStorage.getItem("username");
         const session = localStorage.getItem("session");
@@ -363,7 +366,7 @@
           redirect: "follow"
         };
 
-        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}`, requestOptions)
+        fetch(`https://api.themoviedb.org/3//tv/${idSerie}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             this.genres = result.genres
@@ -387,7 +390,7 @@
           redirect: "follow"
         };
 
-        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/aggregate_credits`, requestOptions2)
+        fetch(`https://api.themoviedb.org/3//tv/${idSerie}/aggregate_credits`, requestOptions2)
           .then((response) => response.json())
           .then((result) => {
 
@@ -421,7 +424,7 @@
         fetch(`https://api.themoviedb.org/3/account/${username}/rated/tv?session_id=${session}`, requestOptions3)
           .then((response) => response.json())
           .then((result) => {
-            const movie = result.results.find(movie => movie.id == idPelicula);
+            const movie = result.results.find(movie => movie.id == idSerie);
             if (movie) {
               this.calificar = movie.rating * 10;
             } else {
@@ -443,7 +446,7 @@
         fetch(`https://api.themoviedb.org/3//account/${username}/favorite/tv?session_id=${session}`, requestOptions4)
           .then((response) => response.json())
           .then((result) => {
-            const serie = result.results.find(serie => serie.id == idPelicula);
+            const serie = result.results.find(serie => serie.id == idSerie);
             if (serie) {
               this.favoriteFlag = 1
               this.favorite = "Remove from Favorite"
@@ -463,7 +466,7 @@
           redirect: "follow"
         };
 
-        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/recommendations`, requestOptions5)
+        fetch(`https://api.themoviedb.org/3//tv/${idSerie}/recommendations`, requestOptions5)
           .then((response) => response.json())
           .then((result) => {
             this.recommendation = result.results
@@ -479,7 +482,7 @@
           redirect: "follow"
         };
 
-        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/keywords`, requestOptions6)
+        fetch(`https://api.themoviedb.org/3//tv/${idSerie}/keywords`, requestOptions6)
           .then((response) => response.json())
           .then((result) => {
             this.keywords = result.results
@@ -496,7 +499,7 @@
           redirect: "follow"
         };
 
-        fetch(`https://api.themoviedb.org/3//tv/${idPelicula}/videos?language=en-US`, requestOptions7)
+        fetch(`https://api.themoviedb.org/3//tv/${idSerie}/videos?language=en-US`, requestOptions7)
           .then((response) => response.json())
           .then((result) => {
 
