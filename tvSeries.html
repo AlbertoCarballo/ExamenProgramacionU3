@@ -17,7 +17,7 @@
       <div class="nav-bar">
         <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
           <div class="container-fluid">
-            <a class="navbar-brand" @click="redirectHome">Navbar</a>
+            <a class="navbar-brand" href="#">Navbar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
               aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -28,7 +28,7 @@
                   <a class="nav-link active" aria-current="page" @click="redirectHome">Home</a>
                 </li>
               </ul>
-              <div class="logout-button" style="margin-left: auto;">
+              <div class="logout-button">
                 <button @click="logout">Log Out</button>
               </div>
             </div>
@@ -38,14 +38,7 @@
       <div class="card-info-container"
         :style="{ '--background-image': 'url(https://media.themoviedb.org/t/p/w440_and_h660_face/' + img + ')' }">
         <div class="card">
-          <div class="first-content">
-            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + img"
-              style="width:100% ; height:100%">
-          </div>
-          <div class="second-content">
-            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + img2"
-              style="width:100% ; height:100%">
-          </div>
+          <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + img" alt="">
         </div>
 
         <div class="info-container">
@@ -88,14 +81,14 @@
               </button>
             </div>
           </div>
-
         </div>
-
+        
       </div>
+    
 
       <div class="puntaje-container">
         <h2>Califica esta película (0 - 100): {{calificar}}</h2>
-        <input type="range" v-model.number="calificar" id="rating" min="0" max="100" step="5" class="slider">
+        <input type="range" v-model.number="calificar" id="rating" min="0" max="100" step="5" class="slider" placeholder="range">
         <div class="puntaje-btn">
           <button class="calificar-btn" @click="calificarPeli">Calificar</button>
           <button class="borrar-btn" @click="borrarCalificacion">Borrar Calificación</button>
@@ -107,8 +100,7 @@
         <br>
         <div class="reparto">
           <div class="actor-card" v-for="casting in cast" @click="redirectActors(casting)">
-            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + casting.profile_path"
-              style="width:100%; height:auto;">
+            <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + casting.profile_path" alt="">
             <h3>{{casting.name}}</h3>
             <p>{{casting.character}}</p>
             <p>{{casting.episode_count}} Episodios</p>
@@ -122,8 +114,7 @@
           <div class="card-recommendation" v-for="recommendation in recommendation" :key="recommendation.id"
             @click="redirectTVSeries(recommendation)">
             <div class="image-container">
-              <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path"
-                style="width:100%; height:auto;">
+              <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path" alt="">
             </div>
             <div class="info-recommendation">
               <h3>{{ recommendation.name }}</h3>
@@ -140,8 +131,7 @@
         <div class="header">Última temporada</div>
 
         <div class="season-card" v-for="season in lastSeason">
-          <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path"
-            style="width: 300px; height:200px;">
+          <img class="season-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path" alt="">
 
           <div class="season-card-content">
             <h2>Temporada {{season.season_number}}</h2>
