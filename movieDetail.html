@@ -81,12 +81,7 @@ José Eduardo Hirales Núñez
                         <br>
                         <br>
                         <div class="info-container">
-                            <h4>Release Date: </br> {{ movie.release_date }}</h4>
                             <p>{{ movie.overview.slice(0, 200) }}{{ movie.overview.length > 200 ? '...' : '' }}</p>
-                            <h4>Original Language: {{ movie.original_language }}</h4>
-                            <h4>Popularity: {{ movie.popularity }}</h4>
-                            <h4>Vote Average: {{ movie.vote_average }}</h4>
-                            <h4>Vote Count: {{ movie.vote_count }}</h4>
                         </div>
 
                         <div class="puntaje-container">
@@ -105,22 +100,26 @@ José Eduardo Hirales Núñez
                             <br>
                             <div class="keyword">
 
-                                <button class="button-keyword" v-for="keyword in keywords">{{keyword.name}}</button>
+                                <button class="button-keyword" v-for="keyword in keywords"
+                                    @click="redirectKeyword(keyword)">{{keyword.name}}</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="movieBackgroundImg">
-                    <img :src="'https://image.tmdb.org/t/p/w1280' + movie.backdrop_path" alt="movie backdrop">
-                </div> -->
+                <!-- <div class=" movieBackgroundImg">
+                                    <img :src="'https://image.tmdb.org/t/p/w1280' + movie.backdrop_path"
+                                        alt="movie backdrop">
+                            </div> -->
             </div>
 
             <div class="containerCast">
-                <div class="movieCast" v-for="actor in actors" :key="actor.id">
+                <h3>Movie cast</h3>
+                <div class="movieCast" v-for="actor in actors" :key="actor.id" @click="redirectActors(actor)">
                     <img :src="'https://image.tmdb.org/t/p/w500' + actor.profile_path" alt="actor.name"
                         v-if="actor.profile_path">
                     <h2>{{ actor.name }}</h2>
                 </div>
+
             </div>
 
             <div class="recommendedMovieContainer">
@@ -170,6 +169,12 @@ José Eduardo Hirales Núñez
                 redirectTrailer() {
                     window.open(`https://www.youtube.com/watch?v=${this.movieTrailer}`, '_blank');
                 },
+                redirectActors(actor) {
+                    window.location.href = `artistDetail.html?id=${actor.id}`;
+                }, redirectKeyword(keyword) {
+                    window.location.href = `pClave.html?id=${keyword.id}`;
+                },
+
                 addFavorite() {
                     const urlParams = new URLSearchParams(window.location.search);
                     const idPelicula = urlParams.get('id');
@@ -310,6 +315,8 @@ José Eduardo Hirales Núñez
                         .catch(error => {
                             console.log("Error fetching cast:", error);
                         });
+                }, redirectActors(cast) {
+                    window.location.href = `artistDetail.html?id=${cast.id}`;
                 },
                 getRecommendedMovies(movieId) {
                     const url = `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=a6a488b515b4ce93c09d8af3c641eb43`;
