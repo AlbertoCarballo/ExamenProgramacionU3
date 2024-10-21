@@ -84,33 +84,99 @@ José Eduardo Hirales Núñez
                 <label>Password:</label>
                 <input type="password" v-model="password">
             </fieldset>
-            <button type="submit">Enviar</button>
+            <button type="submit" @click="login">Enviar</button>
         </form>
     </div>
     <script>
-        const { createApp, ref } = Vue;
-        createApp({
-            data() {
-                return {
-                    email: 'admin@hotmail.com',
-                    password: 'admin',
-                    isValid: ref(false)
-                }
-            },
-            methods: {
-                login() {
-                    console.log(this.email)
-                    console.log(this.password)
-                    if (this.email === 'admin@hotmail.com' && this.password === 'admin') {
-                        this.isValid = ref(true);
-                        window.location.href = 'movies.html'
+        const { createApp, ref } = Vue
+
+createApp({
+    setup() {
+
+        const name_app = ref('Mi primer app')
+        let email = ref('Albercriko')
+        let password = ref('asdasd123123@')
+        let is_log = ref(false)
+        let token = ref('')
+
+        return { name_app, email, password, is_log }
+
+    },
+    methods: {
+
+        login() {
+            console.log(this.email)
+            console.log(this.password)
+
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+            const raw = JSON.stringify({
+                "username": this.email,
+                "password": this.password,
+                "request_token": this.token
+            });
+
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
+
+            fetch("https://api.themoviedb.org/3/authentication/token/validate_with_login", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    console.log(result)
+                    if (result.success) {
+
+                        this.is_log = true
+
+                        window.location.href = "movies.html";
+
+                        localStorage.setItem("is_log", this.is_log);
+                        localStorage.setItem("username", this.email);
+
                     } else {
-                        this.isValid = ref(false);
-                        alert('We could not validate your information. Want to try again?');
+                        alert("Verifique la información")
                     }
-                }
-            }
-        }).mount('#main')
+                })
+                .catch((error) => console.error(error));
+        }
+    },
+    mounted() {
+        const myHeaders2 = new Headers();
+        myHeaders2.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
+
+        const requestOptions2 = {
+            method: "GET",
+            headers: myHeaders2,
+            redirect: "follow"
+        };
+
+        fetch("https://api.themoviedb.org/3/authentication/token/new", requestOptions2)
+            .then((response) => response.json())
+            .then((result) => {
+
+                console.log(result.request_token)
+                this.token = result.request_token
+                localStorage.setItem("token", result.request_token);
+            })
+            .catch((error) => console.error(error));
+        console.log("Hola")
+
+
+
+        let is_log = localStorage.getItem("is_log");
+        let username = localStorage.getItem("username");
+
+        if (is_log != null && username != null) {
+
+            window.location.href = "movies.html";
+        }
+    }
+}).mount('#main')
     </script>
 </body>
 </html>
