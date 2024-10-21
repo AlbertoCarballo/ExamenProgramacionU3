@@ -1,7 +1,49 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-color: #000 !important;
+    color: #fff !important;
 }
+
+.nav-bar {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000; 
+  }
+
+  .navbar {
+    background-color: #7A1CAC !important;
+  }
+
+  .content {
+    margin-top: 60px; 
+  }
+
+  .logout-button {
+    margin-left: auto;
+  }
+
+   button {
+    background-color: #7A1CAC; 
+    border: none;
+    margin-left: 10px;
+    color: white; 
+    padding: 10px 20px; 
+    font-size: 16px;
+    border-radius: 5px; 
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s; 
+  }
+  
+  button:hover {
+    background: linear-gradient(144deg, #7A1CAC 50%, #2E073F); 
+    transform: scale(1.05); 
+  }
 
 .contenedor-supremo {
     width: 100%;
@@ -15,13 +57,16 @@ body {
 .season-container {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #ccc;
     padding: 20px 0;
+    margin-top: 50px;
+    /* margin: 10px; */
     /* Ajuste el espaciado vertical */
-    width: 100%;
+    width: 80%;
     /* Cambiado a 100% para ocupar todo el ancho */
-    max-width: 600px;
     /* Mantener el ancho máximo */
+    cursor: pointer !important;
+    background-color: #2E073F;
+    border-radius: 12px;
 }
 
 .info button{
@@ -29,6 +74,9 @@ body {
 }
 .image {
     margin-right: 20px;
+    margin-left: 20px;
+
+    border-radius: 5px;
 }
 
 .image img {
@@ -49,9 +97,12 @@ body {
 
 .info p {
     margin: 5px 0;
-    color: #666;
 }
 
 .info .release-date {
     font-weight: bold;
+}
+
+.nav-link{
+    cursor: pointer;
 }

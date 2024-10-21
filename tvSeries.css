@@ -394,3 +394,6 @@ button:hover {
     background-color: #158aff;
     transform: scale(1.05);
 }
+.nav-link{
+    cursor: pointer;
+}

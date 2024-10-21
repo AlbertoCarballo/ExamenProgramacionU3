@@ -27,6 +27,9 @@
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" @click="redirectHome">Home</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" @click="goBack">Volver</a>
+                </li>
               </ul>
               <div class="logout-button">
                 <button @click="logout">Log Out</button>
@@ -82,13 +85,14 @@
             </div>
           </div>
         </div>
-        
+
       </div>
-    
+
 
       <div class="puntaje-container">
         <h2>Califica esta película (0 - 100): {{calificar}}</h2>
-        <input type="range" v-model.number="calificar" id="rating" min="0" max="100" step="5" class="slider" placeholder="range">
+        <input type="range" v-model.number="calificar" id="rating" min="0" max="100" step="5" class="slider"
+          placeholder="range">
         <div class="puntaje-btn">
           <button class="calificar-btn" @click="calificarPeli">Calificar</button>
           <button class="borrar-btn" @click="borrarCalificacion">Borrar Calificación</button>
@@ -114,7 +118,8 @@
           <div class="card-recommendation" v-for="recommendation in recommendation" :key="recommendation.id"
             @click="redirectTVSeries(recommendation)">
             <div class="image-container">
-              <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path" alt="">
+              <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + recommendation.poster_path"
+                alt="">
             </div>
             <div class="info-recommendation">
               <h3>{{ recommendation.name }}</h3>
@@ -131,7 +136,8 @@
         <div class="header">Última temporada</div>
 
         <div class="season-card" v-for="season in lastSeason">
-          <img class="season-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path" alt="">
+          <img class="season-img"
+            v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path" alt="">
 
           <div class="season-card-content">
             <h2>Temporada {{season.season_number}}</h2>
@@ -330,7 +336,11 @@
         logout() {
           localStorage.clear();
           window.location.href = "index.html";
+        },
+        goBack() {
+          window.history.back();
         }
+
 
 
       },
