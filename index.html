@@ -16,7 +16,7 @@ José Eduardo Hirales Núñez
         <form @submit.prevent="login" v-if="!isValid">
             <h1>Iniciar Sesión</h1>
             <fieldset>
-                <label>User name:</label>
+                <label>Username:</label>
                 <input type="text" v-model="username">
             </fieldset>
             <br>
@@ -34,18 +34,18 @@ createApp({
     setup() {
 
         const name_app = ref('Mi primer app')
-        let email = ref('')
+        let username = ref('')
         let password = ref('')
         let is_log = ref(false)
         let token = ref('')
 
-        return { name_app, email, password, is_log }
+        return { name_app, username, password, is_log }
 
     },
     methods: {
 
         login() {
-            console.log(this.email)
+            console.log(this.username)
             console.log(this.password)
 
             const myHeaders = new Headers();
@@ -53,7 +53,7 @@ createApp({
             myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmYxN2MyZGEyMDQ5Njg0ZTRjYmJmOTE1YmI3ZmE5MSIsIm5iZiI6MTcyODQyMDc0Ny45MjIzMDUsInN1YiI6IjY3MDU5OTM4ZjRiOTE5ZjgzOTc3OGJmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.P2ljJ6l49mdKja0Fj5G-9mQ0CJcJKah8c_KjT_U2OVw");
 
             const raw = JSON.stringify({
-                "username": this.email,
+                "username": this.username,
                 "password": this.password,
                 "request_token": this.token
             });
@@ -76,7 +76,7 @@ createApp({
                         window.location.href = "home.html";
 
                         localStorage.setItem("is_log", this.is_log);
-                        localStorage.setItem("username", this.email);
+                        localStorage.setItem("username", this.username);
 
                     } else {
                         alert("Verifique la información")
