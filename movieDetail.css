@@ -1,3 +1,48 @@
+body{
+    background-color: black !important;
+    font-family: Arial, sans-serif !important;
+}
+
+.nav-bar {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000; 
+  }
+
+  .navbar {
+    background-color: #7A1CAC !important;
+  }
+
+  .content {
+    margin-top: 60px; 
+  }
+
+  .logout-button {
+    margin-left: auto;
+  }
+
+  .logout-button button {
+    background-color: #7A1CAC; 
+    border: none;
+    margin-left: 10px;
+    color: white; 
+    padding: 10px 20px; 
+    font-size: 16px;
+    border-radius: 5px; 
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s; 
+  }
+  
+  .logout-button button:hover {
+    background: linear-gradient(144deg, #7A1CAC 50%, #2E073F); 
+    transform: scale(1.05); 
+  }
+
 #main {
     display: flex;
     flex-direction: column;
@@ -5,8 +50,9 @@
     align-items: center;
     min-height: 100vh;
     color: #fff;
-    background-color: #1c1c1e;
+    background-color: #000;
     padding: 20px;
+    margin-top: 60px;
 }
 
 .movieDetails {
@@ -36,10 +82,23 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.details button {
+    margin: 5px;  
+    padding: 10px 15px;  
+    background-color: #7A1CAC;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.details button:hover {
+    background: linear-gradient(144deg, #7A1CAC 50%, #2E073F); ;
+}
 
 .card {
     color: white !important;
-    background-color: #2c2c2e;
+    background-color: #2E073F;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px #444b6e8a;
@@ -103,7 +162,7 @@
 .keyword button {
     margin: 5px;  
     padding: 10px 15px;  
-    background-color: #6b6b6b;
+    background-color: #7A1CAC;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -111,23 +170,7 @@
 }
 
 .keyword button:hover {
-    background-color: #bbbbbb;
-}
-
-button {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #6b6b6b;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    margin: 0 5px;
-}
-
-button:hover {
-    background-color: #bbbbbb;
+    background: linear-gradient(144deg, #7A1CAC 50%, #2E073F); ;
 }
 
 .puntaje-container{
@@ -144,33 +187,11 @@ button:hover {
 .slider {
     width: 100%;
     margin: 10px 0;
-}
-.button-container {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.logout-button {
-    margin-left: auto;
-}
-
-.logout-button button {
-    background-color: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.logout-button button:hover {
-    text-decoration: underline;
+    background-color: #7A1CAC;
 }
 
 h1 {
-    color: #0298cb;
-    font-family: Bahnschrift Light;
+    color: white;
 }
 
 .h1Container {
@@ -178,18 +199,15 @@ h1 {
 }
 
 h3 {
-    color: #0298cb;
-    font-family: Bahnschrift Light;
+    color: #fff;
     margin: 0px 0px 20px 10px;
 }
 
 h4 {
-    font-family: Bahnschrift Light;
     text-align: justify;
 }
 
 p {
-    font-family: Bahnschrift Light;
     text-align: justify;
 }
 
@@ -198,7 +216,6 @@ p {
 }
 
 .containerCast {
-    font-family: Bahnschrift Light;
     display: flex;
     flex-direction: row;
     overflow-x: auto;
@@ -206,7 +223,7 @@ p {
     margin-top: 20px;
     width: 100%;
     max-width: 1100px;
-    background-color: #2c2c2e;
+    background-color: #2E073F;
     border-radius: 8px;
     justify-content: flex-start; 
     margin: 60px auto;
@@ -226,7 +243,7 @@ p {
     flex: 0 0 auto;
     width: 120px;
     text-align: center;
-    margin-right: 10px;
+    margin-left: 10px;
     scroll-snap-align: center; 
     cursor: pointer;
 }
@@ -239,12 +256,11 @@ p {
 .movieCast h2 {
     font-size: 1rem;
     margin: 0;
-    color: #fff;
+    color: #fff !important;
 }
 
 .recommendedMovieContainer {
-    font-family: Bahnschrift Light;
-    background-color: #2c2c2e;
+    background-color: #2E073F;
     border-radius: 8px;
     padding: 10px 0;
     margin-top: 20px;
@@ -275,9 +291,10 @@ p {
 }
 
 .recommendedMovie img {
-    width: 100%;
+    width: 150px;
     border-radius: 5px;
     margin-bottom: 5px;
+    margin-left: 20px;
 }
 
 .recommendedMovie h2 {
@@ -296,8 +313,7 @@ p {
     position: absolute; 
     top: 0; 
     left: 10px; 
-    color: #0298cb;
-    font-family: Bahnschrift Light;
+    color: #fff;
     margin: 0 0 20px 0; 
     margin-top: 15px;
 }
