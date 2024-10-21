@@ -50,6 +50,7 @@ José Eduardo Hirales Núñez
                             <h1>{{ movie.title }}</h1>
                             <hr> <h3> Generos: <br></h3>
                         </div>
+                        <br>
                         <div class="genres">
                             <button class="genre" v-for="genre in genres" @click="redirectGenres(genre)">
                                 {{genre.name}}
