@@ -1,36 +1,57 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.nav-bar {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    background-color: #7A1CAC !important;
+}
+
+.content {
+    margin-top: 60px;
+}
+
+.logout-button {
+    margin-left: auto;
 }
 
 .contenedor-supremo {
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* Cambiado a columna */
     align-items: center;
-    /* Centrar horizontalmente */
 }
 
 .season-container {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #ccc;
     padding: 20px 0;
-    /* Ajuste el espaciado vertical */
-    width: 100%;
-    /* Cambiado a 100% para ocupar todo el ancho */
-    max-width: 600px;
-    /* Mantener el ancho máximo */
+    margin-top: 50px;
+    width: 80%;
     cursor: pointer !important;
+    background-color: #2E073F;
+    border-radius: 12px;
 }
 
 .image {
     margin-right: 20px;
+    margin-left: 20px;
 }
 
 .image img {
-    width: 150px;
+    width: 200px;
     height: auto;
     border-radius: 5px;
 }
@@ -41,15 +62,18 @@ body {
 
 .info h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: 34px;
     font-weight: bold;
 }
 
 .info p {
     margin: 5px 0;
-    color: #666;
+    color: #fff;
 }
 
 .info .release-date {
     font-weight: bold;
+}
+.nav-link{
+    cursor: pointer;
 }

@@ -17,7 +17,7 @@
             <div class="nav-bar">
                 <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
                     <div class="container-fluid">
-                        <a class="navbar-brand" >Navbar</a>
+                        <a class="navbar-brand" href="#">Navbar</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                             aria-label="Toggle navigation">
@@ -28,18 +28,22 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" @click="redirectHome">Home</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" @click="goBack">Volver</a>
+                                </li>
                             </ul>
-                            <div class="logout-button" style="margin-left: auto;">
+                            <div class="logout-button">
                                 <button @click="logout">Log Out</button>
                             </div>
                         </div>
                     </div>
                 </nav>
             </div>
+
             <div class="season-container" v-for="season in seasons" @click="redirectEpisode(season)">
                 <div class="image">
                     <img v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + season.poster_path"
-                        v-bind:alt="seasons.original_title">
+                        v-bind:alt="seasons.original_title" alt="">
                 </div>
                 <div class="info">
                     <h2>{{season.name}}</h2>
@@ -83,6 +87,9 @@
                 logout() {
                     localStorage.clear();
                     window.location.href = "index.html";
+                },
+                goBack() {
+                    window.history.back();
                 }
 
 
