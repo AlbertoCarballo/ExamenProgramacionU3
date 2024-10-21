@@ -44,7 +44,7 @@
     <div class="section-container">
       <h3>Tendencias</h3>
       <div class="scrollable-row">
-        <div class="card" v-for="trend in trendings">
+        <div class="card" @click="detallesmovie(trend)" v-for="trend in trendings">
           <div class="img-if" v-if="(trend.poster_path || trend.backdrop_path) != null">
             <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + (trend.poster_path || trend.backdrop_path)"
               v-bind:alt="trend.original_title || trend.original_name" alt="" />
@@ -53,7 +53,7 @@
             <img id="card-no-img" v-bind:src="'https://i.ibb.co/R9s5MsR/card-no-img.png'" alt="" />
           </div>
 
-          <div class="card__content" @click="detallesmovie(trend)">
+          <div class="card__content">
             <h6 class="card__title">{{ trend.title || trend.name }}</h6>
             <p class="card__description">{{ trend.release_date || trend.first_air_date }}</p>
           </div>
@@ -69,10 +69,10 @@
       </div>
       <div v-if="isMoviesSectionVisible">
         <div class="scrollable-row">
-          <div id="card" class="card" v-for="popular in popularMovies" :key="popular.id">
+          <div id="card" class="card" @click="detallesmovie(trend)" v-for="popular in popularMovies" :key="popular.id">
             <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + popular.poster_path"
               v-bind:alt="popular.title || popular.name" alt="">
-            <div class="card__content" @click="detallesmovie(popular)">
+            <div class="card__content">
               <h6 class="card__title">
                 {{ popular.title || popular.name }}
               </h6>
@@ -85,10 +85,10 @@
       </div>
       <div v-if="isTVShowsSectionVisible">
         <div class="scrollable-row">
-          <div id="card" class="card" v-for="popular in popularTV" :key="popular.id">
+          <div id="card" class="card" @click="detallestv(popular)" v-for="popular in popularTV" :key="popular.id">
             <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + popular.poster_path"
               v-bind:alt="popular.title || popular.name" alt="">
-            <div class="card__content" @click="detallestv(popular)">
+            <div class="card__content">
               <h6 class="card__title">
                 {{ popular.title || popular.name }}
               </h6>
@@ -104,10 +104,10 @@
     <div class="section-container">
       <h3>Ver Gratis</h3>
       <div class="scrollable-row">
-        <div id="card" class="card" v-for="free in freeWatch">
+        <div id="card" class="card" @click="detallesmovie(free)" v-for="free in freeWatch">
           <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + free.poster_path"
             v-bind:alt="free.original_title" alt="">
-          <div class="card__content" @click="detallesmovie(free)">
+          <div class="card__content">
             <h6 class="card__title">
               {{ free.original_title }}
             </h6>
@@ -122,10 +122,10 @@
     <div class="section-container">
       <h3>TV Series</h3>
       <div class="scrollable-row">
-        <div id="card" class="card" v-for="series in tvSeries">
+        <div id="card" class="card" @click="detallestv(series)" v-for="series in tvSeries">
           <img id="card-img" v-bind:src="'https://media.themoviedb.org/t/p/w440_and_h660_face/' + series.poster_path"
             v-bind:alt="series.original_title" alt="">
-          <div class="card__content" @click="detallestv(series)">
+          <div class="card__content">
             <h6 class="card__title">
               {{ series.original_name }}
             </h6>
